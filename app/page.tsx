@@ -17,7 +17,7 @@ export default async function Page() {
     <div>
       <p>Landing Page</p>
       <Link href="/sign-in">
-        <Button variant="link">Sign In</Button>
+        <Button>Sign In</Button>
       </Link>
     </div>
   )

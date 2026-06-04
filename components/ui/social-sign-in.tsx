@@ -34,12 +34,7 @@ export default function SocialSignIn({
   }
 
   return (
-    <Button
-      className="w-full"
-      onClick={handleClick}
-      variant="outline"
-      disabled={loading}
-    >
+    <Button onClick={handleClick} variant="outline" disabled={loading}>
       {children}
     </Button>
   )
