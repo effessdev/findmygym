@@ -1,5 +1,10 @@
-import SignInWithGitHub from "@/components/ui/sign-in-with-github"
+import SignInWithGitHub from "@/components/ui/social-sign-in"
+import { SiGoogle } from "react-icons/si"
 
 export default function SignInPage() {
-  return <SignInWithGitHub />
+  return (
+    <SignInWithGitHub provider="google">
+      <SiGoogle /> Sign in with Google
+    </SignInWithGitHub>
+  )
 }

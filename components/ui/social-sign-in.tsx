@@ -1,31 +1,35 @@
 "use client"
 
 import { authClient } from "@/lib/auth-client"
-import { SiGithub } from "react-icons/si"
 import { Button } from "./button"
 import { useState } from "react"
 import { toast } from "sonner"
-import { Spinner } from "./spinner"
-import { cn } from "@/lib/utils"
+import { ReactNode } from "react"
 
-export default function SignInWithGitHub() {
-  const [showLoading, setShowLoading] = useState(false)
+export default function SocialSignIn({
+  provider,
+  children,
+}: {
+  provider: "google" | "github"
+  children: ReactNode
+}) {
+  const [loading, setLoading] = useState(false)
 
   async function handleClick() {
-    setShowLoading(true)
+    setLoading(true)
 
     try {
       await authClient.signIn.social({
-        provider: "github",
-        callbackURL: "/home",
+        provider: provider,
+        callbackURL: "/app/remember",
         errorCallbackURL: "/error",
-        newUserCallbackURL: "/welcome",
+        newUserCallbackURL: "/app/remember",
         disableRedirect: false,
       })
     } catch (err) {
       console.log(err)
       toast.error(err instanceof Error ? err.message : "Something went wrong")
-      setShowLoading(false)
+      setLoading(false)
     }
   }
 
@@ -34,11 +38,9 @@ export default function SignInWithGitHub() {
       className="w-full"
       onClick={handleClick}
       variant="outline"
-      disabled={showLoading}
+      disabled={loading}
     >
-      <SiGithub />
-      Sign in with GitHub
-      <Spinner className={cn(!showLoading && "hidden")} />
+      {children}
     </Button>
   )
 }
