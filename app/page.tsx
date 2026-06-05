@@ -9,6 +9,9 @@ export default async function Page() {
     return (
       <div>
         <p>Welcome, {session.user.name}!</p>
+        <Link href="/partner">
+          <Button>Join the Partner Program</Button>
+        </Link>
       </div>
     )
   }

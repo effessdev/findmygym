@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { createGym } from "./actions"
 import { gymCreateSchema } from "@/lib/schemas/gym"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 type GymFormInput = z.input<typeof gymCreateSchema>
 type GymCreateValues = z.infer<typeof gymCreateSchema>
@@ -17,6 +18,7 @@ export default function CreateGymForm() {
   const [isPending, startTransition] = useTransition()
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const router = useRouter()
 
   const {
     register,
@@ -46,6 +48,7 @@ export default function CreateGymForm() {
         await createGym(values)
         reset()
         setStatusMessage("Gym created successfully.")
+        router.push("/partner")
       } catch (error) {
         setSubmissionError(
           error instanceof Error ? error.message : "Unable to create gym."
@@ -137,8 +140,8 @@ export default function CreateGymForm() {
           </label>
           <textarea
             id="equipment"
-            rows={6}
-            placeholder="Cardio Machines (8), Strength Machines (12), Squat Racks (2), Smith Machines (1), Adjustable Benches (6), Barbells (6), Dumbbell Pairs (20), Weight Plates (500kg), Kettlebells (12), Cable Stations (2), Resistance Bands (20), Medicine Balls (10), Yoga Mats (20), Pull-Up Stations (2), Battle Ropes (2)."
+            rows={4}
+            placeholder="Cardio Machines (8), Strength Machines (12), Squat Racks (2), Smith Machines (1), ..."
             {...register("equipment")}
             className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
           />
@@ -155,7 +158,7 @@ export default function CreateGymForm() {
           </label>
           <textarea
             id="openingHours"
-            rows={1}
+            rows={2}
             placeholder="Mon-Fri: 6am - 10pm, Sat-Sun: 8am - 8pm"
             {...register("openingHours")}
             className="w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm shadow-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
