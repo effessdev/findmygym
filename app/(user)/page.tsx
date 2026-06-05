@@ -2,9 +2,11 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import {
   Pagination,
   PaginationContent,
@@ -57,14 +59,24 @@ export default async function Page({ searchParams }: PageProps) {
         {gyms.map((g) => (
           <Card key={g.id} className="flex flex-col">
             <CardHeader>
-              <CardTitle className="text-lg font-bold">{g.name}</CardTitle>
-              <CardDescription>{g.description}</CardDescription>
-            </CardHeader>
-            <CardContent>
+              <CardTitle className="text-lg font-bold">
+                <div className="flex justify-between gap-4">
+                  <p>{g.name}</p>
+                  <span className="text-primary">₹{g.feePerMonth}/mo</span>
+                </div>
+              </CardTitle>
               <p className="text-sm text-muted-foreground">
                 Location: {g.location}
               </p>
+            </CardHeader>
+            <CardContent>
+              <p>{g.description}</p>
             </CardContent>
+            <CardFooter className="pt-0">
+              <Button variant="outline" className="ml-auto">
+                More details
+              </Button>
+            </CardFooter>
           </Card>
         ))}
       </div>
