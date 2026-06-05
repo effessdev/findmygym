@@ -15,6 +15,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+import DeleteGymDialog from "./_components/delete-gym-dialog"
 
 export default async function PartnerPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -114,9 +115,7 @@ export default async function PartnerPage() {
                   </div>
                 </CardContent>
                 <CardFooter>
-                  <span className="text-sm text-muted-foreground">
-                    Created by {session.user.name ?? session.user.email}
-                  </span>
+                  <DeleteGymDialog gymId={gymItem.id} />
                 </CardFooter>
               </Card>
             ))}

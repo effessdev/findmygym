@@ -214,7 +214,7 @@ export default function CreateGymForm() {
       ) : null}
 
       <div className="flex gap-2">
-        <Link href="/partner/gym" className="flex-1">
+        <Link href="/partner" className="flex-1">
           <Button variant="secondary" className="w-full">
             Go Back
           </Button>
