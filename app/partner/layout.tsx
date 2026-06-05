@@ -1,5 +1,5 @@
 import BottomNav from "@/components/layout/bottom-nav"
-import { ArrowLeftIcon, WrenchIcon } from "lucide-react"
+import { ArrowLeftIcon, WrenchIcon, BicepsFlexedIcon } from "lucide-react"
 
 export default async function SignInLayout({
   children,
@@ -13,6 +13,7 @@ export default async function SignInLayout({
         items={[
           { name: "Back", icon: <ArrowLeftIcon />, href: "/me" },
           { name: "Dashboard", icon: <WrenchIcon />, href: "/partner" },
+          { name: "Gyms", icon: <BicepsFlexedIcon />, href: "/partner/gym" },
         ]}
       />
     </div>
