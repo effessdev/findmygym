@@ -34,7 +34,7 @@ export const gym = pgTable("gym", {
 
   contactEmail: text("contact_email"),
 
-  contactPhone: text("contact_phone"),
+  contactPhone: text("contact_phone").notNull(),
 
   images: text("images").array().notNull().default([]),
 
