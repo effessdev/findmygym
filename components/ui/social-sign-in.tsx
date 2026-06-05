@@ -4,15 +4,19 @@ import { authClient } from "@/lib/auth-client"
 import { Button } from "./button"
 import { useState } from "react"
 import { toast } from "sonner"
-import { ReactNode } from "react"
+import { ReactNode, ComponentPropsWithoutRef } from "react"
 
 export default function SocialSignIn({
   provider,
   children,
+  ...buttonProps
 }: {
   provider: "google" | "github"
   children: ReactNode
-}) {
+} & Omit<
+  ComponentPropsWithoutRef<typeof Button>,
+  "onClick" | "disabled" | "children"
+>) {
   const [loading, setLoading] = useState(false)
 
   async function handleClick() {
@@ -21,9 +25,9 @@ export default function SocialSignIn({
     try {
       await authClient.signIn.social({
         provider: provider,
-        callbackURL: "/discover",
+        callbackURL: "/me",
         errorCallbackURL: "/sign-in?signinfailed=1",
-        newUserCallbackURL: "/discover?newuser=1",
+        newUserCallbackURL: "/me?newuser=1",
         disableRedirect: false,
       })
     } catch (err) {
@@ -34,7 +38,7 @@ export default function SocialSignIn({
   }
 
   return (
-    <Button onClick={handleClick} variant="outline" disabled={loading}>
+    <Button onClick={handleClick} disabled={loading} {...buttonProps}>
       {children}
     </Button>
   )
