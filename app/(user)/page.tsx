@@ -1,27 +1,134 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "@/components/ui/pagination"
+import db from "@/db/db"
+import { gym } from "@/db/schema/gym-schema"
+import { eq } from "drizzle-orm"
 
-export default async function Page() {
-  const session = await auth.api.getSession({ headers: await headers() })
-  if (session !== null) {
-    return (
-      <div>
-        <p>Welcome, {session.user.name}!</p>
-        <Link href="/partner">
-          <Button>Join the Partner Program</Button>
-        </Link>
-      </div>
-    )
-  }
+interface PageProps {
+  searchParams: Promise<{ page?: string }>
+}
+
+const ITEMS_PER_PAGE = 20
+
+export default async function Page({ searchParams }: PageProps) {
+  const params = await searchParams
+  const currentPage = parseInt(params.page || "1", 10)
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE
+
+  // Get all approved gyms
+  const gyms = await db
+    .select()
+    .from(gym)
+    .where(eq(gym.isApproved, true))
+    .limit(ITEMS_PER_PAGE)
+    .offset(offset)
+
+  // Get total count for pagination
+  const countResult = await db
+    .select({ count: gym.id })
+    .from(gym)
+    .where(eq(gym.isApproved, true))
+
+  const totalGyms = countResult.length
+  const totalPages = Math.ceil(totalGyms / ITEMS_PER_PAGE)
 
   return (
-    <div>
-      <p>Landing Page</p>
-      <Link href="/sign-in">
-        <Button>Sign In</Button>
-      </Link>
+    <div className="space-y-6 px-4 py-8">
+      <div>
+        <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
+        <p className="text-gray-600">Browse all available gyms</p>
+      </div>
+
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        {gyms.map((g) => (
+          <Card key={g.id} className="flex flex-col">
+            <CardHeader>
+              <CardTitle className="text-lg font-bold">{g.name}</CardTitle>
+              <CardDescription>{g.description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground">
+                Location: {g.location}
+              </p>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Pagination */}
+      {totalPages > 1 && (
+        <div className="mt-8 flex justify-center">
+          <Pagination>
+            <PaginationContent>
+              {currentPage > 1 && (
+                <PaginationItem>
+                  <PaginationPrevious href={`?page=${currentPage - 1}`} />
+                </PaginationItem>
+              )}
+
+              {Array.from({ length: totalPages }, (_, i) => {
+                const pageNum = i + 1
+                const showPage =
+                  pageNum === 1 ||
+                  pageNum === totalPages ||
+                  Math.abs(pageNum - currentPage) <= 1
+
+                if (!showPage) {
+                  if (pageNum === 2 && currentPage > 3) {
+                    return (
+                      <PaginationItem key="ellipsis-start">
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )
+                  }
+                  if (
+                    pageNum === totalPages - 1 &&
+                    currentPage < totalPages - 2
+                  ) {
+                    return (
+                      <PaginationItem key="ellipsis-end">
+                        <PaginationEllipsis />
+                      </PaginationItem>
+                    )
+                  }
+                  return null
+                }
+
+                return (
+                  <PaginationItem key={pageNum}>
+                    <PaginationLink
+                      href={`?page=${pageNum}`}
+                      isActive={pageNum === currentPage}
+                    >
+                      {pageNum}
+                    </PaginationLink>
+                  </PaginationItem>
+                )
+              })}
+
+              {currentPage < totalPages && (
+                <PaginationItem>
+                  <PaginationNext href={`?page=${currentPage + 1}`} />
+                </PaginationItem>
+              )}
+            </PaginationContent>
+          </Pagination>
+        </div>
+      )}
     </div>
   )
 }
