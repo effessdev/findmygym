@@ -52,7 +52,7 @@ export default async function Page({ searchParams }: PageProps) {
     <div className="space-y-6 px-4 py-8">
       <div>
         <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
-        <p className="text-gray-600">Browse all available gyms</p>
+        <p className="text-muted-foreground">Browse all available gyms</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">

@@ -14,7 +14,7 @@ export default function BottomNav({ items }: { items: NavItem[] }) {
   const pathname = usePathname()
 
   return (
-    <div className="sticky bottom-0 flex w-full items-center justify-around border-t-2 bg-card bg-white py-2 pt-3">
+    <div className="sticky bottom-0 flex w-full items-center justify-around border-t-2 bg-background py-2 pt-3">
       {items.map((item, index) => (
         <Link
           key={index}
