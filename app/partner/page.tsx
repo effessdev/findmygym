@@ -47,7 +47,7 @@ function CountDisplay({
   valueUnit?: string
 }) {
   return (
-    <div className="justify-centerrounded flex flex-col items-center border p-4">
+    <div className="justify-centerrounded flex flex-col items-center bg-card p-4">
       <p className="text-6xl font-bold">
         {value}
         {valueUnit && (
