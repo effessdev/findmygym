@@ -6,6 +6,7 @@ import { gym } from "@/db/schema/gym-schema"
 import { eq, count } from "drizzle-orm"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import PullToRefresh from "@/components/layout/pull-to-refresh"
 
 export default async function PartnerPage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -47,15 +48,17 @@ function CountDisplay({
   valueUnit?: string
 }) {
   return (
-    <div className="justify-centerrounded flex flex-col items-center bg-card p-4">
-      <p className="text-6xl font-bold">
-        {value}
-        {valueUnit && (
-          <span className="text-4xl text-muted-foreground">{valueUnit}</span>
-        )}
-      </p>
+    <PullToRefresh>
+      <div className="justify-centerrounded flex flex-col items-center bg-card p-4">
+        <p className="text-6xl font-bold">
+          {value}
+          {valueUnit && (
+            <span className="text-4xl text-muted-foreground">{valueUnit}</span>
+          )}
+        </p>
 
-      <h2 className="text-lg font-semibold">{label}</h2>
-    </div>
+        <h2 className="text-lg font-semibold">{label}</h2>
+      </div>
+    </PullToRefresh>
   )
 }
