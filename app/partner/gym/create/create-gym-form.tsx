@@ -1,23 +1,35 @@
 "use client"
 
-import { useState, useTransition } from "react"
+import { useEffect, useState, useTransition } from "react"
+import type { ChangeEvent } from "react"
 import { useForm, type SubmitHandler } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { z } from "zod"
 
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { createGym } from "./actions"
 import { gymCreateSchema } from "@/lib/schemas/gym"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 
+const MAX_IMAGE_BYTES = 1_000_000
+const MIN_IMAGES = 3
+
 type GymFormInput = z.input<typeof gymCreateSchema>
-type GymCreateValues = z.infer<typeof gymCreateSchema>
+
+type SelectedImage = {
+  file: File
+  previewUrl: string
+}
 
 export default function CreateGymForm() {
   const [isPending, startTransition] = useTransition()
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const [imageError, setImageError] = useState<string | null>(null)
+  const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([])
+  const [isProcessingImages, setIsProcessingImages] = useState(false)
   const router = useRouter()
 
   const {
@@ -39,14 +51,27 @@ export default function CreateGymForm() {
     },
   })
 
+  useEffect(() => {
+    return () => {
+      selectedImages.forEach((image) => URL.revokeObjectURL(image.previewUrl))
+    }
+  }, [selectedImages])
+
   const onSubmit: SubmitHandler<GymFormInput> = (values) => {
     setSubmissionError(null)
     setStatusMessage(null)
+    setImageError(null)
+
+    if (selectedImages.length < MIN_IMAGES) {
+      setImageError(`Please upload at least ${MIN_IMAGES} images.`)
+      return
+    }
 
     startTransition(async () => {
       try {
-        await createGym(values)
+        await createGym(values, selectedImages.map((image) => image.file))
         reset()
+        setSelectedImages([])
         setStatusMessage("Gym created successfully.")
         router.push("/partner")
       } catch (error) {
@@ -54,6 +79,57 @@ export default function CreateGymForm() {
           error instanceof Error ? error.message : "Unable to create gym."
         )
       }
+    })
+  }
+
+  const handleImageFiles = async (event: ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files
+    if (!files?.length) {
+      return
+    }
+
+    setImageError(null)
+    setIsProcessingImages(true)
+
+    const newSelections: SelectedImage[] = []
+
+    for (const file of Array.from(files)) {
+      if (!file.type.startsWith("image/")) {
+        setImageError("Only image files are allowed.")
+        continue
+      }
+
+      if (file.size > MAX_IMAGE_BYTES) {
+        setImageError("Each image must be 1MB or smaller.")
+        continue
+      }
+
+      try {
+        const croppedFile = await cropFileTo4by3(file)
+        const previewUrl = URL.createObjectURL(croppedFile)
+        newSelections.push({ file: croppedFile, previewUrl })
+      } catch (error) {
+        setImageError(
+          error instanceof Error
+            ? error.message
+            : "Unable to process one of the selected images."
+        )
+      }
+    }
+
+    setIsProcessingImages(false)
+    setSelectedImages((current) => [...current, ...newSelections])
+    event.currentTarget.value = ""
+  }
+
+  const removeImage = (index: number) => {
+    setSelectedImages((current) => {
+      const next = [...current]
+      const [removed] = next.splice(index, 1)
+      if (removed) {
+        URL.revokeObjectURL(removed.previewUrl)
+      }
+      return next
     })
   }
 
@@ -205,6 +281,60 @@ export default function CreateGymForm() {
         </div>
       </div>
 
+      <div className="rounded-xl border border-slate-200/80 bg-slate-50 p-4 dark:border-slate-700/80 dark:bg-slate-900/70">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold">Gym images</p>
+            <p className="text-sm text-slate-600 dark:text-slate-400">
+              Upload at least {MIN_IMAGES} photos. Images larger than 1MB are not allowed.
+              We will crop each image to a 4:3 ratio automatically.
+            </p>
+          </div>
+          <input
+            id="gymImages"
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleImageFiles}
+            className="text-sm text-slate-600 file:mr-4 file:rounded-full file:border-0 file:bg-primary file:px-3 file:py-1 file:text-white dark:text-slate-200"
+          />
+        </div>
+
+        {imageError && (
+          <p className="mt-3 text-sm text-destructive">{imageError}</p>
+        )}
+
+        {isProcessingImages && (
+          <p className="mt-3 text-sm text-slate-600 dark:text-slate-400">
+            Processing images...
+          </p>
+        )}
+
+        {selectedImages.length > 0 && (
+          <div className="mt-4 grid gap-3 sm:grid-cols-3">
+            {selectedImages.map((image, index) => (
+              <div key={image.previewUrl} className="relative overflow-hidden rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-950">
+                <Image
+                  src={image.previewUrl}
+                  alt={`Selected gym image ${index + 1}`}
+                  width={320}
+                  height={240}
+                  className="h-40 w-full object-cover"
+                  unoptimized
+                />
+                <button
+                  type="button"
+                  onClick={() => removeImage(index)}
+                  className="absolute right-2 top-2 rounded-full bg-slate-950/80 px-2 py-1 text-xs text-white transition hover:bg-slate-900/95"
+                >
+                  Remove
+                </button>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {submissionError ? (
         <p className="text-sm text-destructive">{submissionError}</p>
       ) : statusMessage ? (
@@ -220,10 +350,101 @@ export default function CreateGymForm() {
           </Button>
         </Link>
 
-        <Button type="submit" disabled={isPending} className="flex-1">
+        <Button type="submit" disabled={isPending || isProcessingImages} className="flex-1">
           {isPending ? "Creating..." : "Create Gym"}
         </Button>
       </div>
     </form>
   )
+}
+
+async function cropFileTo4by3(file: File): Promise<File> {
+  const image = await loadImage(file)
+  const aspectRatio = 4 / 3
+  let cropWidth = image.width
+  let cropHeight = image.height
+
+  if (image.width / image.height > aspectRatio) {
+    cropWidth = image.height * aspectRatio
+  } else {
+    cropHeight = image.width / aspectRatio
+  }
+
+  const cropX = Math.round((image.width - cropWidth) / 2)
+  const cropY = Math.round((image.height - cropHeight) / 2)
+  const maxWidth = 1200
+  const maxHeight = 900
+  const scale = Math.min(1, maxWidth / cropWidth, maxHeight / cropHeight)
+
+  const canvas = document.createElement("canvas")
+  canvas.width = Math.round(cropWidth * scale)
+  canvas.height = Math.round(cropHeight * scale)
+  const ctx = canvas.getContext("2d")
+
+  if (!ctx) {
+    throw new Error("Unable to process image")
+  }
+
+  ctx.drawImage(
+    image,
+    cropX,
+    cropY,
+    cropWidth,
+    cropHeight,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  )
+
+  let quality = 0.92
+  let blob = await canvasToBlob(canvas, "image/jpeg", quality)
+
+  while (blob.size > MAX_IMAGE_BYTES && quality > 0.55) {
+    quality -= 0.1
+    blob = await canvasToBlob(canvas, "image/jpeg", quality)
+  }
+
+  if (blob.size > MAX_IMAGE_BYTES) {
+    throw new Error("Cropped image is still larger than 1MB.")
+  }
+
+  return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), {
+    type: "image/jpeg",
+  })
+}
+
+function loadImage(file: File): Promise<HTMLImageElement> {
+  return new Promise((resolve, reject) => {
+    const url = URL.createObjectURL(file)
+    const image = document.createElement("img")
+
+    image.onload = () => {
+      URL.revokeObjectURL(url)
+      resolve(image)
+    }
+
+    image.onerror = () => {
+      URL.revokeObjectURL(url)
+      reject(new Error("Unable to load image file."))
+    }
+
+    image.src = url
+  })
+}
+
+function canvasToBlob(
+  canvas: HTMLCanvasElement,
+  type: string,
+  quality: number
+): Promise<Blob> {
+  return new Promise((resolve, reject) => {
+    canvas.toBlob((blob) => {
+      if (blob) {
+        resolve(blob)
+      } else {
+        reject(new Error("Canvas export failed."))
+      }
+    }, type, quality)
+  })
 }

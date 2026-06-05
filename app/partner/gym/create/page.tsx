@@ -6,8 +6,9 @@ export default function Page() {
       <div className="mb-8 space-y-3">
         <h1 className="text-3xl font-semibold">Create Gym Listing</h1>
         <p className="text-sm text-slate-600 dark:text-slate-300">
-          Fill in the form below to add a new gym record to the database.
-          Latitude, longitude, and images are ignored for now.
+          Fill in the form below to add a new gym record to the database. Images
+          are uploaded and stored, while latitude and longitude remain ignored
+          for now.
         </p>
       </div>
       <CreateGymForm />
