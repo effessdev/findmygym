@@ -86,44 +86,42 @@ export default function CreateGymForm() {
     })
   }
 
-  const handleImageFiles = async (event: ChangeEvent<HTMLInputElement>) => {
-    const files = event.target.files
-    if (!files?.length) {
-      return
-    }
+  const handleImageFile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+
+    if (!file) return
 
     setImageError(null)
     setIsProcessingImages(true)
 
-    const newSelections: SelectedImage[] = []
-
-    for (const file of Array.from(files)) {
+    try {
       if (!file.type.startsWith("image/")) {
-        setImageError("Only image files are allowed.")
-        continue
+        throw new Error("Only image files are allowed.")
       }
 
       if (file.size > MAX_IMAGE_BYTES) {
-        setImageError("Each image must be 1MB or smaller.")
-        continue
+        throw new Error("Each image must be 1MB or smaller.")
       }
 
-      try {
-        const croppedFile = await cropFileTo4by3(file)
-        const previewUrl = URL.createObjectURL(croppedFile)
-        newSelections.push({ file: croppedFile, previewUrl })
-      } catch (error) {
-        setImageError(
-          error instanceof Error
-            ? error.message
-            : "Unable to process one of the selected images."
-        )
-      }
+      const croppedFile = await cropFileTo4by3(file)
+
+      setSelectedImages((current) => [
+        ...current,
+        {
+          file: croppedFile,
+          previewUrl: URL.createObjectURL(croppedFile),
+        },
+      ])
+    } catch (error) {
+      setImageError(
+        error instanceof Error
+          ? error.message
+          : "Unable to process the selected image."
+      )
+    } finally {
+      setIsProcessingImages(false)
+      event.currentTarget.value = ""
     }
-
-    setIsProcessingImages(false)
-    setSelectedImages((current) => [...current, ...newSelections])
-    event.currentTarget.value = ""
   }
 
   const removeImage = (index: number) => {
@@ -251,53 +249,71 @@ export default function CreateGymForm() {
       </div>
 
       <div className="space-y-4 rounded-xl border border-input p-4">
-        <div className="space-y-2">
-          <p className="text-sm font-semibold">Gym images</p>
-          <p className="text-sm text-muted-foreground">
-            Upload at least {MIN_IMAGES} photos. Images will be cropped to a 4:3
-            aspect ratio.
-          </p>
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <p className="text-sm font-semibold">Photos</p>
+            <p className="text-sm text-muted-foreground">
+              Upload at least {MIN_IMAGES} photos. Images will be cropped to a
+              4:3 aspect ratio.
+            </p>
+          </div>
+
+          <div className="text-right">
+            <p className="text-sm font-medium">
+              {selectedImages.length} / {MIN_IMAGES}
+            </p>
+            <p className="text-xs text-muted-foreground">uploaded</p>
+          </div>
         </div>
-        <Input
+
+        <input
           id="gymImages"
           type="file"
           accept="image/*"
-          multiple
-          onChange={handleImageFiles}
+          onChange={handleImageFile}
+          className="hidden"
         />
 
-        {imageError && (
-          <p className="mt-3 text-sm text-destructive">{imageError}</p>
-        )}
+        <label htmlFor="gymImages">
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isProcessingImages}
+            asChild
+          >
+            <span>{isProcessingImages ? "Processing..." : "Add image"}</span>
+          </Button>
+        </label>
 
-        {isProcessingImages && (
-          <p className="mt-3 text-sm text-muted-foreground">
-            Processing images...
-          </p>
-        )}
+        {imageError && <p className="text-sm text-destructive">{imageError}</p>}
 
         {selectedImages.length > 0 && (
-          <div className="mt-4 space-y-3">
+          <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
             {selectedImages.map((image, index) => (
               <div
                 key={image.previewUrl}
-                className="relative overflow-hidden rounded-xl border border-input bg-background"
+                className="group relative overflow-hidden rounded-xl border border-input"
               >
                 <Image
                   src={image.previewUrl}
                   alt={`Selected gym image ${index + 1}`}
-                  width={320}
-                  height={240}
-                  className="h-40 w-full object-fill"
+                  width={400}
+                  height={300}
+                  className="aspect-4/3 w-full object-cover"
                   unoptimized
                 />
+
                 <button
                   type="button"
                   onClick={() => removeImage(index)}
-                  className="absolute top-2 right-2 rounded-full bg-muted px-2 py-1 text-xs text-foreground transition hover:bg-muted/80"
+                  className="absolute top-2 right-2 rounded-md bg-background/90 px-2 py-1 text-xs shadow-sm"
                 >
                   Remove
                 </button>
+
+                <div className="absolute bottom-2 left-2 rounded-md bg-background/90 px-2 py-1 text-xs">
+                  #{index + 1}
+                </div>
               </div>
             ))}
           </div>
