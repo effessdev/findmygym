@@ -285,7 +285,9 @@ export default function CreateGymForm() {
           </Button>
         </label>
 
-        {imageError && <p className="text-sm text-destructive">{imageError}</p>}
+        {imageError && (
+          <p className="mt-2 text-sm text-destructive">{imageError}</p>
+        )}
 
         {selectedImages.length > 0 && (
           <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
