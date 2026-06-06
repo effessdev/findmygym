@@ -11,11 +11,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { createGym } from "./actions"
+import { createGym } from "../actions"
 import { gymCreateSchema } from "@/lib/schemas/gym"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { cropFileTo4by3, MAX_IMAGE_BYTES, MIN_IMAGES } from "./utils"
+import { cropFileTo4by3, MAX_IMAGE_BYTES, MIN_IMAGES } from "../utils"
 
 type GymFormInput = z.input<typeof gymCreateSchema>
 
