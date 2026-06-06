@@ -254,8 +254,8 @@ export default function CreateGymForm() {
         <div className="space-y-2">
           <p className="text-sm font-semibold">Gym images</p>
           <p className="text-sm text-muted-foreground">
-            Upload at least {MIN_IMAGES} photos. Images larger than 1MB are not
-            allowed. We will crop each image to a 4:3 ratio automatically.
+            Upload at least {MIN_IMAGES} photos. Images will be cropped to a 4:3
+            aspect ratio.
           </p>
         </div>
         <Input
@@ -281,14 +281,14 @@ export default function CreateGymForm() {
             {selectedImages.map((image, index) => (
               <div
                 key={image.previewUrl}
-                className="relative overflow-hidden rounded-xl border border-input bg-background p-1"
+                className="relative overflow-hidden rounded-xl border border-input bg-background"
               >
                 <Image
                   src={image.previewUrl}
                   alt={`Selected gym image ${index + 1}`}
                   width={320}
                   height={240}
-                  className="h-40 w-full object-cover"
+                  className="h-40 w-full object-fill"
                   unoptimized
                 />
                 <button
