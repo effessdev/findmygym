@@ -5,6 +5,7 @@ import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { gym } from "@/db/schema/gym-schema"
 import { eq } from "drizzle-orm"
+import { del } from "@vercel/blob"
 
 export async function deleteGym(
   gymId: string
@@ -28,6 +29,9 @@ export async function deleteGym(
     }
   }
 
+  for (const imageUrl of gymToDelete.images) {
+    await del(imageUrl)
+  }
   await db.delete(gym).where(eq(gym.id, gymId))
 
   return { success: true }
