@@ -19,6 +19,7 @@ import {
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
 import { eq } from "drizzle-orm"
+import Image from "next/image"
 
 interface PageProps {
   searchParams: Promise<{ page?: string }>
@@ -50,14 +51,22 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6 px-4 py-8">
-      <div>
-        <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
-        <p className="text-muted-foreground">Browse all available gyms</p>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4">
+        <div>
+          <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
+          <p className="text-muted-foreground">Browse all available gyms</p>
+        </div>
         {gyms.map((g) => (
           <Card key={g.id} className="flex flex-col">
+            {g.images.length > 0 && (
+              <Image
+                src={g.images[0]}
+                alt="Gym image"
+                width={400}
+                height={300}
+                className="aspect-4/3 w-full"
+              />
+            )}
             <CardHeader>
               <CardTitle className="text-lg font-bold">
                 <div className="flex justify-between gap-4">
