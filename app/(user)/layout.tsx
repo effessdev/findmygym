@@ -1,4 +1,4 @@
-import BottomNav from "@/components/layout/bottom-nav"
+import BottomNav from "@/app/_components/bottom-nav"
 import { HomeIcon } from "lucide-react"
 import { MapIcon, UserIcon } from "lucide-react"
 

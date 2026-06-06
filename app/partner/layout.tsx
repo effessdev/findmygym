@@ -1,4 +1,4 @@
-import BottomNav from "@/components/layout/bottom-nav"
+import BottomNav from "@/app/_components/bottom-nav"
 import { ArrowLeftIcon, WrenchIcon, BicepsFlexedIcon } from "lucide-react"
 
 export default async function SignInLayout({
