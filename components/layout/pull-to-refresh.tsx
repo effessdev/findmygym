@@ -1,3 +1,7 @@
+/**
+ * This is probably the dumbest thing I have ever done.
+ */
+
 "use client"
 
 import { ReactNode, useEffect, useRef, useState } from "react"
