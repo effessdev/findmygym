@@ -8,6 +8,9 @@ import type { z } from "zod"
 
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
 import { createGym } from "./actions"
 import { gymCreateSchema } from "@/lib/schemas/gym"
 import Link from "next/link"
@@ -138,15 +141,12 @@ export default function CreateGymForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
       <div className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="name" className="block text-sm font-medium">
-            Gym name
-          </label>
-          <input
+          <Label htmlFor="name">Gym name</Label>
+          <Input
             id="name"
             type="text"
             placeholder="Your Awesome Gym"
             {...register("name")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
           {errors.name && (
             <p className="text-sm text-destructive">{errors.name.message}</p>
@@ -154,16 +154,13 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="feePerMonth" className="block text-sm font-medium">
-            Monthly fee (INR)
-          </label>
-          <input
+          <Label htmlFor="feePerMonth">Monthly fee (INR)</Label>
+          <Input
             id="feePerMonth"
             type="number"
             step="0.01"
             min="0"
             {...register("feePerMonth", { valueAsNumber: true })}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
           {errors.feePerMonth && (
             <p className="text-sm text-destructive">
@@ -173,15 +170,12 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="location" className="block text-sm font-medium">
-            Location
-          </label>
-          <textarea
+          <Label htmlFor="location">Location</Label>
+          <Textarea
             id="location"
             rows={4}
             placeholder="4th Floor, Syama Business Centre, Opposite Hindu Office, Vyttila Junction, NH Bypass, Kochi, Kerala 682019, India"
             {...register("location")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
           {errors.location && (
             <p className="text-sm text-destructive">
@@ -191,15 +185,12 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="description" className="block text-sm font-medium">
-            Description
-          </label>
-          <textarea
+          <Label htmlFor="description">Description</Label>
+          <Textarea
             id="description"
             rows={4}
             placeholder="Describe your gym and its amenities..."
             {...register("description")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
           {errors.description && (
             <p className="text-sm text-destructive">
@@ -209,15 +200,12 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="equipment" className="block text-sm font-medium">
-            Equipment
-          </label>
-          <textarea
+          <Label htmlFor="equipment">Equipment</Label>
+          <Textarea
             id="equipment"
             rows={4}
             placeholder="Cardio Machines (8), Strength Machines (12), Squat Racks (2), Smith Machines (1), ..."
             {...register("equipment")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
           {errors.equipment && (
             <p className="text-sm text-destructive">
@@ -227,15 +215,12 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="openingHours" className="block text-sm font-medium">
-            Opening hours
-          </label>
-          <textarea
+          <Label htmlFor="openingHours">Opening hours</Label>
+          <Textarea
             id="openingHours"
             rows={2}
             placeholder="Mon-Fri: 6am - 10pm, Sat-Sun: 8am - 8pm"
             {...register("openingHours")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
           />
           {errors.openingHours && (
             <p className="text-sm text-destructive">
@@ -245,15 +230,8 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="contactPhone" className="block text-sm font-medium">
-            Contact phone
-          </label>
-          <input
-            id="contactPhone"
-            type="tel"
-            {...register("contactPhone")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
-          />
+          <Label htmlFor="contactPhone">Contact phone</Label>
+          <Input id="contactPhone" type="tel" {...register("contactPhone")} />
           {errors.contactPhone && (
             <p className="text-sm text-destructive">
               {errors.contactPhone.message}
@@ -262,15 +240,8 @@ export default function CreateGymForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="contactEmail" className="block text-sm font-medium">
-            Contact email (optional)
-          </label>
-          <input
-            id="contactEmail"
-            type="email"
-            {...register("contactEmail")}
-            className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition outline-none focus:border-primary focus:ring-2 focus:ring-primary/10"
-          />
+          <Label htmlFor="contactEmail">Contact email (optional)</Label>
+          <Input id="contactEmail" type="email" {...register("contactEmail")} />
           {errors.contactEmail && (
             <p className="text-sm text-destructive">
               {errors.contactEmail.message}
@@ -287,13 +258,12 @@ export default function CreateGymForm() {
             allowed. We will crop each image to a 4:3 ratio automatically.
           </p>
         </div>
-        <input
+        <Input
           id="gymImages"
           type="file"
           accept="image/*"
           multiple
           onChange={handleImageFiles}
-          className="text-sm file:mr-4 file:rounded-full file:border-0 file:px-3 file:py-1"
         />
 
         {imageError && (
