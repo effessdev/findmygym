@@ -17,6 +17,7 @@ This version has breaking changes — APIs, conventions, and file structure may 
 ## Style guide
 
 - All headings have `font-bold`.
+- This website is mobile-first. If you want a centered item (like a sign in form) in the middle of the screen, instead of `min-h-screen` in the parent container, use `min-h-dvh` to account for the top browser menu.
 
 # Examples
 

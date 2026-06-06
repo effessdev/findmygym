@@ -38,7 +38,7 @@ export default function SignInPage() {
   }, [searchParams])
 
   return (
-    <div className="flex min-h-screen items-center justify-center p-4 text-center">
+    <div className="flex min-h-dvh items-center justify-center p-4 text-center">
       <Card className="w-full max-w-lg">
         <CardHeader>
           <CardTitle className="mb-2 text-2xl font-bold">Sign in</CardTitle>
