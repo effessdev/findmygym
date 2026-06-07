@@ -1,1 +1,1 @@
-# FindMyGym
+# findmygym

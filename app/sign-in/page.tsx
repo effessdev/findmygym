@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import { useSearchParams } from "next/navigation"
 import { SiGoogle } from "react-icons/si"
-import SocialSignIn from "@/components/ui/social-sign-in"
+import SocialSignIn from "./_components/social-sign-in"
 import { toast } from "sonner"
 
 import {
