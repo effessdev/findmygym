@@ -9,14 +9,16 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { createGym } from "../actions"
-import { gymCreateSchema } from "@/lib/schemas/gym"
+import { createGym } from "../_actions/create-gym"
+import { gymCreateSchema } from "@/app/partner/gym/create/_schemas/gym"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { MIN_IMAGES } from "../utils"
 import { GymImagePicker, type SelectedImage } from "./gym-image-picker"
 
 type GymFormInput = z.input<typeof gymCreateSchema>
+
+const MIN_IMAGES = 3
+const MAX_IMAGES = 6
 
 export default function CreateGymForm() {
   const [isPending, startTransition] = useTransition()
@@ -194,6 +196,8 @@ export default function CreateGymForm() {
       </div>
 
       <GymImagePicker
+        minImages={MIN_IMAGES}
+        maxImages={MAX_IMAGES}
         selectedImages={selectedImages}
         setSelectedImages={setSelectedImages}
         imageError={imageError}

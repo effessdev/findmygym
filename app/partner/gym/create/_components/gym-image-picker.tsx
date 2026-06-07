@@ -3,9 +3,8 @@
 import { useEffect } from "react"
 import type { ChangeEvent } from "react"
 import Image from "next/image"
-
+import { processImage } from "../_utils/process-image"
 import { Button } from "@/components/ui/button"
-import { cropFileTo4by3, MAX_IMAGE_BYTES, MIN_IMAGES } from "../utils"
 
 export type SelectedImage = {
   file: File
@@ -13,6 +12,8 @@ export type SelectedImage = {
 }
 
 type GymImagePickerProps = {
+  minImages: number
+  maxImages: number
   selectedImages: SelectedImage[]
   setSelectedImages: React.Dispatch<React.SetStateAction<SelectedImage[]>>
   imageError: string | null
@@ -22,6 +23,8 @@ type GymImagePickerProps = {
 }
 
 export function GymImagePicker({
+  minImages,
+  maxImages,
   selectedImages,
   setSelectedImages,
   imageError,
@@ -48,17 +51,13 @@ export function GymImagePicker({
         throw new Error("Only image files are allowed.")
       }
 
-      if (file.size > MAX_IMAGE_BYTES) {
-        throw new Error("Each image must be 1MB or smaller.")
-      }
-
-      const croppedFile = await cropFileTo4by3(file)
+      const processedFile = await processImage(file)
 
       setSelectedImages((current) => [
         ...current,
         {
-          file: croppedFile,
-          previewUrl: URL.createObjectURL(croppedFile),
+          file: processedFile,
+          previewUrl: URL.createObjectURL(processedFile),
         },
       ])
     } catch (error) {
@@ -92,14 +91,14 @@ export function GymImagePicker({
         <div>
           <p className="text-sm font-semibold">Photos</p>
           <p className="text-sm text-muted-foreground">
-            Upload at least {MIN_IMAGES} photos. Images will be cropped to a 4:3
-            aspect ratio.
+            Upload at least {minImages} photos. Images will be cropped to a 4:3
+            aspect ratio and compressed to 1MB.
           </p>
         </div>
 
         <div className="text-right">
           <p className="text-sm font-medium">
-            {selectedImages.length} / {MIN_IMAGES}
+            {selectedImages.length} / {minImages}
           </p>
           <p className="text-xs text-muted-foreground">uploaded</p>
         </div>
@@ -112,21 +111,6 @@ export function GymImagePicker({
         onChange={handleImageFile}
         className="hidden"
       />
-
-      <label htmlFor="gymImages">
-        <Button
-          type="button"
-          variant="outline"
-          disabled={isProcessingImages}
-          asChild
-        >
-          <span>{isProcessingImages ? "Processing..." : "Add image"}</span>
-        </Button>
-      </label>
-
-      {imageError && (
-        <p className="mt-2 text-sm text-destructive">{imageError}</p>
-      )}
 
       {selectedImages.length > 0 && (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
@@ -158,6 +142,21 @@ export function GymImagePicker({
             </div>
           ))}
         </div>
+      )}
+
+      <label htmlFor="gymImages">
+        <Button
+          type="button"
+          variant="outline"
+          disabled={isProcessingImages || selectedImages.length >= maxImages}
+          asChild
+        >
+          <span>{isProcessingImages ? "Processing..." : "Add image"}</span>
+        </Button>
+      </label>
+
+      {imageError && (
+        <p className="mt-2 text-sm text-destructive">{imageError}</p>
       )}
     </div>
   )

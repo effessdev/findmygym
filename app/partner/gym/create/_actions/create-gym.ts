@@ -8,10 +8,11 @@ import type { z } from "zod"
 import db from "@/db/db"
 import { auth } from "@/lib/auth"
 import { gym } from "@/db/schema/gym-schema"
-import { gymCreateSchema } from "@/lib/schemas/gym"
+import { gymCreateSchema } from "@/app/partner/gym/create/_schemas/gym"
 
 const MAX_IMAGE_BYTES = 1_000_000
 const MIN_IMAGES = 3
+const MAX_IMAGES = 6
 
 export async function createGym(
   values: z.input<typeof gymCreateSchema>,
@@ -26,6 +27,10 @@ export async function createGym(
 
   if (!Array.isArray(imageFiles) || imageFiles.length < MIN_IMAGES) {
     throw new Error(`Please upload at least ${MIN_IMAGES} gym images.`)
+  }
+
+  if (imageFiles.length > MAX_IMAGES) {
+    throw new Error(`Please upload at most ${MAX_IMAGES} gym images.`)
   }
 
   const imageUrls: string[] = []
