@@ -74,7 +74,6 @@ export default async function PartnerPage() {
                   <div className="flex flex-col gap-3">
                     <div className="flex items-center justify-between gap-4">
                       <CardTitle>{gymItem.name}</CardTitle>
-                      <Badge>{gymItem.location}</Badge>
                     </div>
                     <CardDescription>{gymItem.description}</CardDescription>
                   </div>
@@ -89,7 +88,6 @@ export default async function PartnerPage() {
                       }).format(gymItem.feePerMonth)}
                       /mo
                     </Badge>
-                    <Badge>Opening: {gymItem.openingHours}</Badge>
                   </div>
                   <div className="space-y-2 text-sm text-muted-foreground">
                     <p>
