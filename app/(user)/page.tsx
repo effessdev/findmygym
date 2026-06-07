@@ -71,15 +71,19 @@ export default async function Page({ searchParams }: PageProps) {
               <CardTitle className="text-lg font-bold">
                 <div className="flex justify-between gap-4">
                   <p>{g.name}</p>
-                  <span className="text-primary">₹{g.feePerMonth}/mo</span>
+                  <p className="text-primary">₹{g.feePerMonth}/mo</p>
                 </div>
               </CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Location: {g.location}
-              </p>
+              <CardDescription>{g.description}</CardDescription>
             </CardHeader>
             <CardContent>
-              <p>{g.description}</p>
+              <p className="text-sm text-muted-foreground">
+                <span className="font-bold">Location:</span> {g.location}
+              </p>
+              <p className="text-sm text-muted-foreground">
+                <span className="font-bold">Opening Hours:</span>{" "}
+                {g.openingHours}
+              </p>
             </CardContent>
             <CardFooter className="pt-0">
               <Button variant="outline" className="ml-auto">
