@@ -112,7 +112,15 @@ export default async function PartnerPage() {
                     ) : null}
                   </div>
                 </CardContent>
-                <CardFooter>
+                <CardFooter className="flex gap-2">
+                  <Link
+                    href={`/partner/gym/${gymItem.id}/edit`}
+                    className="flex-1"
+                  >
+                    <Button variant="outline" className="w-full">
+                      Edit
+                    </Button>
+                  </Link>
                   <DeleteGymDialog gymId={gymItem.id} />
                 </CardFooter>
               </Card>

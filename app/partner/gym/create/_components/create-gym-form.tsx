@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { createGym } from "../_actions/create-gym"
+import { updateGym } from "../_actions/update-gym"
 import { gymCreateSchema } from "@/app/partner/gym/create/_schemas/gym"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
@@ -20,13 +21,37 @@ type GymFormInput = z.input<typeof gymCreateSchema>
 const MIN_IMAGES = 3
 const MAX_IMAGES = 6
 
-export default function CreateGymForm() {
+interface GymFormProps {
+  isEditMode?: boolean
+  gymId?: string
+  initialValues?: {
+    name: string
+    feePerMonth: number
+    location: string
+    description: string
+    equipment: string
+    openingHours: string
+    contactEmail?: string
+    contactPhone: string
+    images: string[]
+  }
+}
+
+export default function CreateGymForm({
+  isEditMode = false,
+  gymId,
+  initialValues,
+}: GymFormProps) {
   const [isPending, startTransition] = useTransition()
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
 
   const [imageError, setImageError] = useState<string | null>(null)
   const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([])
+  const [existingImages, setExistingImages] = useState<string[]>(
+    initialValues?.images || []
+  )
+  const [imagesToRemove, setImagesToRemove] = useState<string[]>([])
   const [isProcessingImages, setIsProcessingImages] = useState(false)
 
   const router = useRouter()
@@ -39,14 +64,14 @@ export default function CreateGymForm() {
   } = useForm<GymFormInput>({
     resolver: zodResolver(gymCreateSchema),
     defaultValues: {
-      name: "",
-      feePerMonth: 0,
-      location: "",
-      description: "",
-      equipment: "",
-      openingHours: "",
-      contactEmail: "",
-      contactPhone: "",
+      name: initialValues?.name || "",
+      feePerMonth: initialValues?.feePerMonth || 0,
+      location: initialValues?.location || "",
+      description: initialValues?.description || "",
+      equipment: initialValues?.equipment || "",
+      openingHours: initialValues?.openingHours || "",
+      contactEmail: initialValues?.contactEmail || "",
+      contactPhone: initialValues?.contactPhone || "",
     },
   })
 
@@ -55,26 +80,47 @@ export default function CreateGymForm() {
     setStatusMessage(null)
     setImageError(null)
 
-    if (selectedImages.length < MIN_IMAGES) {
+    const totalImages =
+      existingImages.length - imagesToRemove.length + selectedImages.length
+    if (totalImages < MIN_IMAGES) {
       setImageError(`Please upload at least ${MIN_IMAGES} images.`)
       return
     }
 
     startTransition(async () => {
       try {
-        await createGym(
-          values,
-          selectedImages.map((image) => image.file)
-        )
+        if (isEditMode && gymId) {
+          await updateGym(
+            gymId,
+            values,
+            selectedImages.map((image) => image.file),
+            imagesToRemove
+          )
+          setStatusMessage("Gym updated successfully.")
+        } else {
+          // Create mode - validate minimum images
+          if (selectedImages.length < MIN_IMAGES) {
+            setImageError(`Please upload at least ${MIN_IMAGES} images.`)
+            return
+          }
+          await createGym(
+            values,
+            selectedImages.map((image) => image.file)
+          )
+          reset()
+          setSelectedImages([])
+          setStatusMessage("Gym created successfully.")
+        }
 
-        reset()
-        setSelectedImages([])
-
-        setStatusMessage("Gym created successfully.")
-        router.push("/partner")
+        // Redirect to gym details or partner page
+        if (isEditMode) {
+          router.push(`/partner/gym/${gymId}`)
+        } else {
+          router.push("/partner")
+        }
       } catch (error) {
         setSubmissionError(
-          error instanceof Error ? error.message : "Unable to create gym."
+          error instanceof Error ? error.message : "Unable to save gym."
         )
       }
     })
@@ -204,6 +250,11 @@ export default function CreateGymForm() {
         setImageError={setImageError}
         isProcessingImages={isProcessingImages}
         setIsProcessingImages={setIsProcessingImages}
+        existingImages={existingImages}
+        onRemoveExistingImage={(url) => {
+          setExistingImages((current) => current.filter((img) => img !== url))
+          setImagesToRemove((current) => [...current, url])
+        }}
       />
 
       {submissionError ? (
@@ -213,7 +264,10 @@ export default function CreateGymForm() {
       ) : null}
 
       <div className="flex gap-2">
-        <Link href="/partner" className="flex-1">
+        <Link
+          href={isEditMode ? `/partner/gym/${gymId}` : "/partner"}
+          className="flex-1"
+        >
           <Button variant="secondary" className="w-full">
             Go Back
           </Button>
@@ -224,7 +278,13 @@ export default function CreateGymForm() {
           disabled={isPending || isProcessingImages}
           className="flex-1"
         >
-          {isPending ? "Creating..." : "Create Gym"}
+          {isPending
+            ? isEditMode
+              ? "Updating..."
+              : "Creating..."
+            : isEditMode
+              ? "Update Gym"
+              : "Create Gym"}
         </Button>
       </div>
     </form>

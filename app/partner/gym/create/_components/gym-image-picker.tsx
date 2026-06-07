@@ -20,6 +20,8 @@ type GymImagePickerProps = {
   setImageError: React.Dispatch<React.SetStateAction<string | null>>
   isProcessingImages: boolean
   setIsProcessingImages: React.Dispatch<React.SetStateAction<boolean>>
+  existingImages?: string[]
+  onRemoveExistingImage?: (url: string) => void
 }
 
 export function GymImagePicker({
@@ -31,6 +33,8 @@ export function GymImagePicker({
   setImageError,
   isProcessingImages,
   setIsProcessingImages,
+  existingImages = [],
+  onRemoveExistingImage,
 }: GymImagePickerProps) {
   useEffect(() => {
     return () => {
@@ -98,7 +102,7 @@ export function GymImagePicker({
 
         <div className="text-right">
           <p className="text-sm font-medium">
-            {selectedImages.length} / {minImages}
+            {existingImages.length + selectedImages.length} / {minImages}
           </p>
           <p className="text-xs text-muted-foreground">uploaded</p>
         </div>
@@ -112,8 +116,35 @@ export function GymImagePicker({
         className="hidden"
       />
 
-      {selectedImages.length > 0 && (
+      {(existingImages.length > 0 || selectedImages.length > 0) && (
         <div className="grid grid-cols-2 gap-3 md:grid-cols-3">
+          {existingImages.map((imageUrl, index) => (
+            <div
+              key={imageUrl}
+              className="group relative overflow-hidden rounded-xl border border-input"
+            >
+              <Image
+                src={imageUrl}
+                alt={`Gym image ${index + 1}`}
+                width={400}
+                height={300}
+                className="aspect-4/3 w-full object-cover"
+              />
+
+              <button
+                type="button"
+                onClick={() => onRemoveExistingImage?.(imageUrl)}
+                className="absolute top-2 right-2 rounded-md bg-background/90 px-2 py-1 text-xs shadow-sm"
+              >
+                Remove
+              </button>
+
+              <div className="absolute bottom-2 left-2 rounded-md bg-background/90 px-2 py-1 text-xs">
+                #{index + 1}
+              </div>
+            </div>
+          ))}
+
           {selectedImages.map((image, index) => (
             <div
               key={image.previewUrl}
@@ -121,7 +152,7 @@ export function GymImagePicker({
             >
               <Image
                 src={image.previewUrl}
-                alt={`Selected gym image ${index + 1}`}
+                alt={`Selected gym image ${existingImages.length + index + 1}`}
                 width={400}
                 height={300}
                 className="aspect-4/3 w-full object-cover"
@@ -137,7 +168,7 @@ export function GymImagePicker({
               </button>
 
               <div className="absolute bottom-2 left-2 rounded-md bg-background/90 px-2 py-1 text-xs">
-                #{index + 1}
+                #{existingImages.length + index + 1}
               </div>
             </div>
           ))}
@@ -148,7 +179,10 @@ export function GymImagePicker({
         <Button
           type="button"
           variant="outline"
-          disabled={isProcessingImages || selectedImages.length >= maxImages}
+          disabled={
+            isProcessingImages ||
+            existingImages.length + selectedImages.length >= maxImages
+          }
           asChild
         >
           <span>{isProcessingImages ? "Processing..." : "Add image"}</span>
