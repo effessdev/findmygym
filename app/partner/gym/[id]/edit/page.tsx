@@ -15,16 +15,13 @@ interface EditGymPageProps {
 
 export default async function EditGymPage({ params }: EditGymPageProps) {
   const session = await auth.api.getSession({ headers: await headers() })
+  const { id: gymId } = await params
 
   if (!session) {
     redirect("/sign-in")
   }
 
-  const gymData = await db
-    .select()
-    .from(gym)
-    .where(eq(gym.id, params.id))
-    .limit(1)
+  const gymData = await db.select().from(gym).where(eq(gym.id, gymId)).limit(1)
 
   if (!gymData.length) {
     redirect("/partner")
@@ -41,14 +38,14 @@ export default async function EditGymPage({ params }: EditGymPageProps) {
     <main className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-8 space-y-3">
         <h1 className="text-3xl font-bold">Edit Gym Listing</h1>
-        <p className="text-sm text-slate-600 dark:text-slate-300">
+        <p className="text-sm text-muted-foreground">
           Update your gym information below. You can modify any field and add or
           remove images as needed.
         </p>
       </div>
       <CreateGymForm
         isEditMode
-        gymId={params.id}
+        gymId={gymId}
         initialValues={{
           name: gymRecord.name,
           feePerMonth: gymRecord.feePerMonth,
