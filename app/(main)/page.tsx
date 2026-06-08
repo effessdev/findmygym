@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
 import {
   Pagination,
   PaginationContent,
@@ -86,9 +87,11 @@ export default async function Page({ searchParams }: PageProps) {
               </p>
             </CardContent>
             <CardFooter className="pt-0">
-              <Button variant="outline" className="ml-auto">
-                More details
-              </Button>
+              <Link href={`/gym/${g.id}`}>
+                <Button variant="outline" className="ml-auto">
+                  More details
+                </Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}
