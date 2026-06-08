@@ -17,7 +17,7 @@ export default async function GymPage({ params }: { params: { id: string } }) {
   const thisGym = result[0]
 
   return (
-    <div className="p-4">
+    <div className="px-4 py-8">
       {thisGym ? (
         <>
           <Card>

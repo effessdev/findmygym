@@ -4,25 +4,30 @@ import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogClose,
+  DialogDescription,
+  DialogTitle,
   DialogContent,
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { deleteGym } from "../_actions/delete-gym"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export default function DeleteGymDialog({ gymId }: { gymId: string }) {
+  const router = useRouter()
+
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="destructive">Delete Gym</Button>
       </DialogTrigger>
       <DialogContent>
-        <h1 className="text-bold text-lg">Are you sure?</h1>
-        <p className="text-muted-foreground">
+        <DialogTitle className="text-bold text-lg">Are you sure?</DialogTitle>
+        <DialogDescription className="text-muted-foreground">
           Do you want to permanently delete your gym from out listing? This
           cannot be undone.
-        </p>
+        </DialogDescription>
         <DialogFooter>
           <DialogClose asChild>
             <Button>Cancel</Button>
@@ -34,7 +39,7 @@ export default function DeleteGymDialog({ gymId }: { gymId: string }) {
               deleteBtn.disabled = true
               const result = await deleteGym(gymId)
               if (result.success) {
-                window.location.reload()
+                router.push("/partner/gym")
                 return
               }
               toast.error(result.message)
