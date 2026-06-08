@@ -41,9 +41,14 @@ export default async function PartnerPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <Link href="/partner/gym/create">
-              <Button>Let&apos;s Go!</Button>
-            </Link>
+            <div className="flex w-full gap-4">
+              <Link href="/me">
+                <Button variant="outline">Go Back</Button>
+              </Link>
+              <Link href="/partner/gym/create">
+                <Button>Submit a Gym</Button>
+              </Link>
+            </div>
           </CardContent>
         </Card>
       ) : (
