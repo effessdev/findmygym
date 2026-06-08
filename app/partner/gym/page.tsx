@@ -48,26 +48,22 @@ export default async function PartnerPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {gyms.length === 0 && (
-        <div className="mb-8 flex flex-col gap-4 rounded-2xl border border-border bg-card p-6 shadow-sm md:flex-row md:items-end md:justify-between">
-          <div className="space-y-2">
-            <h1 className="text-3xl font-semibold">Partner Dashboard</h1>
-            <p className="max-w-2xl text-sm text-muted-foreground">
-              View your gym listings and submit new gyms to the partner program.
-            </p>
-          </div>
-          <Link href="/partner/gym/create">
-            <Button>Submit my Gym</Button>
-          </Link>
-        </div>
+        <Card>
+          <CardHeader>
+            <CardTitle>You don&apos;t have any gyms yet</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Link href="/partner/gym/create">
+              <Button>Submit my Gym</Button>
+            </Link>
+          </CardContent>
+        </Card>
       )}
 
       {gyms.length > 0 && (
         <>
-          <h1 className="text-2xl font-bold">Your Gyms</h1>
-          <p className="my-4 text-muted-foreground">
-            View and manage your gym listings below.
-          </p>
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+          <h1 className="mb-4 text-2xl font-bold">Your Gyms</h1>
+          <div className="flex flex-col gap-4">
             {gyms.map((gymItem) => (
               <Card key={gymItem.id}>
                 <CardHeader>
