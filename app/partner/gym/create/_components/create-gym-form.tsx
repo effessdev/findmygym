@@ -28,6 +28,8 @@ interface GymFormProps {
     name: string
     feePerMonth: number
     location: string
+    latitude?: number
+    longitude?: number
     description: string
     equipment: string
     openingHours: string
@@ -45,6 +47,8 @@ export default function CreateGymForm({
   const [isPending, startTransition] = useTransition()
   const [statusMessage, setStatusMessage] = useState<string | null>(null)
   const [submissionError, setSubmissionError] = useState<string | null>(null)
+  const [geoError, setGeoError] = useState<string | null>(null)
+  const [isFetchingLocation, setIsFetchingLocation] = useState(false)
 
   const [imageError, setImageError] = useState<string | null>(null)
   const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([])
@@ -60,6 +64,7 @@ export default function CreateGymForm({
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors },
   } = useForm<GymFormInput>({
     resolver: zodResolver(gymCreateSchema),
@@ -67,6 +72,8 @@ export default function CreateGymForm({
       name: initialValues?.name || "",
       feePerMonth: initialValues?.feePerMonth || 0,
       location: initialValues?.location || "",
+      latitude: initialValues?.latitude ?? undefined,
+      longitude: initialValues?.longitude ?? undefined,
       description: initialValues?.description || "",
       equipment: initialValues?.equipment || "",
       openingHours: initialValues?.openingHours || "",
@@ -173,6 +180,88 @@ export default function CreateGymForm({
               {errors.location.message}
             </p>
           )}
+        </div>
+
+        <div className="space-y-2">
+          <Label>Gym location</Label>
+          <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="space-y-2">
+                <Input
+                  id="latitude"
+                  type="number"
+                  step="0.000001"
+                  placeholder="Latitude"
+                  {...register("latitude", {
+                    valueAsNumber: true,
+                  })}
+                />
+                {errors.latitude && (
+                  <p className="text-sm text-destructive">
+                    {errors.latitude.message}
+                  </p>
+                )}
+              </div>
+              <div className="space-y-2">
+                <Input
+                  id="longitude"
+                  type="number"
+                  step="0.000001"
+                  placeholder="Longitude"
+                  {...register("longitude", {
+                    valueAsNumber: true,
+                  })}
+                />
+                {errors.longitude && (
+                  <p className="text-sm text-destructive">
+                    {errors.longitude.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              onClick={() => {
+                setGeoError(null)
+                setIsFetchingLocation(true)
+
+                if (!navigator.geolocation) {
+                  setGeoError("Geolocation is not supported by your browser.")
+                  setIsFetchingLocation(false)
+                  return
+                }
+
+                navigator.geolocation.getCurrentPosition(
+                  (position) => {
+                    const latitude = Number(position.coords.latitude.toFixed(6))
+                    const longitude = Number(
+                      position.coords.longitude.toFixed(6)
+                    )
+                    setValue("latitude", latitude)
+                    setValue("longitude", longitude)
+                    setIsFetchingLocation(false)
+                  },
+                  (error) => {
+                    setGeoError(
+                      error.message || "Unable to retrieve current location."
+                    )
+                    setIsFetchingLocation(false)
+                  },
+                  {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                  }
+                )
+              }}
+              disabled={isFetchingLocation}
+            >
+              {isFetchingLocation
+                ? "Getting location..."
+                : "Use current location"}
+            </Button>
+          </div>
+          {geoError && <p className="text-sm text-destructive">{geoError}</p>}
         </div>
 
         <div className="space-y-2">

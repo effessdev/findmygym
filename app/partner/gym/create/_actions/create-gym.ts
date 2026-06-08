@@ -65,6 +65,8 @@ export async function createGym(
     name: gymData.name,
     feePerMonth: gymData.feePerMonth,
     location: gymData.location,
+    latitude: gymData.latitude,
+    longitude: gymData.longitude,
     description: gymData.description,
     equipment: gymData.equipment,
     openingHours: gymData.openingHours,

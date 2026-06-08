@@ -6,8 +6,6 @@ export const gymCreateSchema = createInsertSchema(gym)
   .omit({
     id: true,
     ownerId: true,
-    latitude: true,
-    longitude: true,
     images: true,
     isApproved: true,
     createdAt: true,
@@ -16,6 +14,32 @@ export const gymCreateSchema = createInsertSchema(gym)
   .extend({
     name: z.string().min(1, "Gym name is required"),
     location: z.string().min(1, "Location is required"),
+    latitude: z.preprocess(
+      (value) => {
+        if (typeof value === "string") {
+          const trimmed = value.trim()
+          return trimmed === "" ? undefined : parseFloat(trimmed)
+        }
+        return value
+      },
+      z
+        .number({ error: "Latitude is required" })
+        .min(-90, "Latitude must be between -90 and 90")
+        .max(90, "Latitude must be between -90 and 90")
+    ),
+    longitude: z.preprocess(
+      (value) => {
+        if (typeof value === "string") {
+          const trimmed = value.trim()
+          return trimmed === "" ? undefined : parseFloat(trimmed)
+        }
+        return value
+      },
+      z
+        .number({ error: "Longitude is required" })
+        .min(-180, "Longitude must be between -180 and 180")
+        .max(180, "Longitude must be between -180 and 180")
+    ),
     description: z.string().min(1, "Description is required"),
     equipment: z.string().min(1, "Equipment details are required"),
     openingHours: z.string().min(1, "Opening hours are required"),
