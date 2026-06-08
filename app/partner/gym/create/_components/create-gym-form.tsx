@@ -183,7 +183,7 @@ export default function CreateGymForm({
         </div>
 
         <div className="space-y-2">
-          <Label>Gym location</Label>
+          <Label>GPS coordinates</Label>
           <div className="grid gap-4 sm:grid-cols-[1fr_auto] sm:items-end">
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
