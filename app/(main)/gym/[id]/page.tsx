@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm"
 import { gym } from "@/db/schema/gym-schema"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { Users, IndianRupee, MapPin, Mail, Phone } from "lucide-react"
+import { IndianRupee, MapPin, Mail, Phone } from "lucide-react"
 import {
   Carousel,
   CarouselContent,
@@ -46,7 +46,6 @@ export default async function SpecificGymPage({
               {thisGym.images.map((image, index) => (
                 <CarouselItem key={index}>
                   <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
                     <Image
                       src={image}
                       alt={`Gym Image ${index + 1}`}
