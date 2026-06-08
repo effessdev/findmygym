@@ -78,40 +78,6 @@ export default async function PartnerPage() {
                     <CardDescription>{gymItem.description}</CardDescription>
                   </div>
                 </CardHeader>
-                <CardContent className="space-y-4 pt-0">
-                  <div className="flex flex-wrap gap-2">
-                    <Badge variant="secondary">
-                      {new Intl.NumberFormat("en-IN", {
-                        style: "currency",
-                        currency: "INR",
-                        maximumFractionDigits: 0,
-                      }).format(gymItem.feePerMonth)}
-                      /mo
-                    </Badge>
-                  </div>
-                  <div className="space-y-2 text-sm text-muted-foreground">
-                    <p>
-                      <span className="font-medium text-foreground">
-                        Equipment:
-                      </span>{" "}
-                      {gymItem.equipment}
-                    </p>
-                    <p>
-                      <span className="font-medium text-foreground">
-                        Contact:
-                      </span>{" "}
-                      {gymItem.contactPhone}
-                    </p>
-                    {gymItem.contactEmail ? (
-                      <p>
-                        <span className="font-medium text-foreground">
-                          Email:
-                        </span>{" "}
-                        {gymItem.contactEmail}
-                      </p>
-                    ) : null}
-                  </div>
-                </CardContent>
                 <CardFooter className="flex gap-2">
                   <Link
                     href={`/partner/gym/${gymItem.id}/edit`}
@@ -121,7 +87,14 @@ export default async function PartnerPage() {
                       Edit
                     </Button>
                   </Link>
-                  <DeleteGymDialog gymId={gymItem.id} />
+                  <Link
+                    href={`/partner/gym/${gymItem.id}/options`}
+                    className="flex-1"
+                  >
+                    <Button variant="default" className="w-full">
+                      Options
+                    </Button>
+                  </Link>
                 </CardFooter>
               </Card>
             ))}

@@ -8,6 +8,7 @@ import {
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
 import { eq } from "drizzle-orm"
+import DeleteGymDialog from "../../../_components/delete-gym-dialog"
 
 export default async function GymPage({ params }: { params: { id: string } }) {
   const { id } = await params
@@ -18,14 +19,19 @@ export default async function GymPage({ params }: { params: { id: string } }) {
   return (
     <div className="p-4">
       {thisGym ? (
-        <Card>
-          <CardHeader>
-            <CardTitle>{thisGym.name}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">Manage your gym here.</p>
-          </CardContent>
-        </Card>
+        <>
+          <Card>
+            <CardHeader>
+              <CardTitle>
+                Gym Options for{" "}
+                <span className="font-bold">{thisGym.name}</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <DeleteGymDialog gymId={thisGym.id} />
+            </CardContent>
+          </Card>
+        </>
       ) : (
         <p>Gym not found</p>
       )}

@@ -265,7 +265,7 @@ export default function CreateGymForm({
 
       <div className="flex gap-2">
         <Link
-          href={isEditMode ? `/partner/gym/${gymId}` : "/partner"}
+          href={isEditMode ? `/partner/gym` : "/partner"}
           className="flex-1"
         >
           <Button variant="secondary" className="w-full">
