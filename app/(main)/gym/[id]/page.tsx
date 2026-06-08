@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm"
 import { gym } from "@/db/schema/gym-schema"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { IndianRupee, MapPin, Mail, Phone } from "lucide-react"
+import { IndianRupee, MapPin, Mail, Phone, RocketIcon } from "lucide-react"
 import {
   Carousel,
   CarouselContent,
@@ -12,6 +12,8 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Image from "next/image"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 
 export default async function SpecificGymPage({
   params,
@@ -62,6 +64,14 @@ export default async function SpecificGymPage({
           </Carousel>
         </div>
       )}
+
+      <div className="mb-8 w-full">
+        <Link href={`/gym/${thisGym.id}/join`} className="flex-1">
+          <Button className="w-full">
+            Join Gym <RocketIcon />
+          </Button>
+        </Link>
+      </div>
 
       <div className="grid gap-8 md:grid-cols-2">
         <div>
