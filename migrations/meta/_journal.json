@@ -15,6 +15,13 @@
       "when": 1780585434952,
       "tag": "0001_parched_stryfe",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1780918135940,
+      "tag": "0002_quiet_skin",
+      "breakpoints": true
     }
   ]
 }
