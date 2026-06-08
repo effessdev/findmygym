@@ -14,6 +14,7 @@ import {
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { JoinGym } from "../../_components/join-gym"
 
 export default async function SpecificGymPage({
   params,
@@ -66,11 +67,7 @@ export default async function SpecificGymPage({
       )}
 
       <div className="mb-8 w-full">
-        <Link href={`/gym/${thisGym.id}/join`} className="flex-1">
-          <Button className="w-full">
-            Join Gym <RocketIcon />
-          </Button>
-        </Link>
+        <JoinGym className="w-full" />
       </div>
 
       <div className="grid gap-8 md:grid-cols-2">

@@ -22,6 +22,7 @@ import { gym } from "@/db/schema/gym-schema"
 import Image from "next/image"
 import { SearchBar } from "./_components/search-bar"
 import { and, count, eq, ilike, or } from "drizzle-orm"
+import { JoinGym } from "./_components/join-gym"
 
 interface PageProps {
   searchParams: Promise<{
@@ -132,9 +133,7 @@ export default async function Page({ searchParams }: PageProps) {
                   <Link href={`/gym/${g.id}`}>
                     <Button variant="outline">More details</Button>
                   </Link>
-                  <Link href={`/gym/${g.id}/join`} className="flex-1">
-                    <Button className="w-full">Join Gym</Button>
-                  </Link>
+                  <JoinGym />
                 </div>
               </CardFooter>
             </Card>
