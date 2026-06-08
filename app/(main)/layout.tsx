@@ -9,7 +9,7 @@ export default async function SignInLayout({
 }) {
   return (
     <div className="flex min-h-dvh w-full flex-col">
-      <main className="flex-1">{children}</main>
+      <main className="mx-auto w-full max-w-2xl flex-1">{children}</main>
       <BottomNav
         items={[
           { name: "Me", icon: <UserIcon />, href: "/me" },

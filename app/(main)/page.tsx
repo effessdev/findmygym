@@ -76,7 +76,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6 px-4 py-8">
-      <div className="mx-auto grid max-w-2xl grid-cols-1 gap-4">
+      <div className="grid w-full grid-cols-1 gap-4">
         <div>
           <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
           <p className="text-muted-foreground">Browse all available gyms</p>
