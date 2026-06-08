@@ -137,6 +137,14 @@ export default async function SpecificGymPage({
               </p>
             </CardContent>
           </Card>
+          <Card className="m-0 p-0">
+            <iframe
+              src={`https://www.google.com/maps?q=${thisGym.latitude},${thisGym.longitude}&z=15&output=embed`}
+              className="aspect-square w-full rounded border-0"
+              loading="lazy"
+              allowFullScreen
+            />
+          </Card>
         </div>
       </div>
     </div>
