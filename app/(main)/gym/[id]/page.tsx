@@ -11,6 +11,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel"
+import Image from "next/image"
 
 export default async function SpecificGymPage({
   params,
@@ -46,10 +47,12 @@ export default async function SpecificGymPage({
                 <CarouselItem key={index}>
                   <div className="overflow-hidden rounded-xl border bg-card text-card-foreground shadow-sm">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={image}
                       alt={`Gym Image ${index + 1}`}
-                      className="h-64 w-full object-cover sm:h-96 md:h-[450px]"
+                      width={400}
+                      height={300}
+                      className="aspect-4/3 w-full object-cover"
                     />
                   </div>
                 </CarouselItem>
