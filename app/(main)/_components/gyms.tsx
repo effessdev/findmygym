@@ -8,25 +8,15 @@ import {
 } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
 import Image from "next/image"
-import { and, count, eq, ilike, or } from "drizzle-orm"
+import { and, eq, ilike, or } from "drizzle-orm"
 import { JoinGym } from "./join-gym"
 
 const ITEMS_PER_PAGE = 20
 
 export default async function Gyms({
-  currentPage,
   offset,
   search,
 }: {
@@ -47,27 +37,6 @@ export default async function Gyms({
     .where(whereClause)
     .limit(ITEMS_PER_PAGE)
     .offset(offset)
-
-  const [{ totalGyms }] = await db
-    .select({
-      totalGyms: count(),
-    })
-    .from(gym)
-    .where(whereClause)
-
-  const totalPages = Math.ceil(totalGyms / ITEMS_PER_PAGE)
-
-  const buildPageUrl = (page: number) => {
-    const params = new URLSearchParams()
-
-    params.set("page", page.toString())
-
-    if (search) {
-      params.set("search", search)
-    }
-
-    return `/?${params.toString()}`
-  }
 
   return (
     <div className="flex flex-col gap-4">

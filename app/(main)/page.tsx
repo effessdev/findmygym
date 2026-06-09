@@ -1,28 +1,7 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import {
-  Pagination,
-  PaginationContent,
-  PaginationEllipsis,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from "@/components/ui/pagination"
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
-import Image from "next/image"
 import { SearchBar } from "./_components/search-bar"
 import { and, count, eq, ilike, or } from "drizzle-orm"
-import { JoinGym } from "./_components/join-gym"
 import Gyms from "./_components/gyms"
 import GymPagination from "./_components/gym-pagination"
 
@@ -48,13 +27,6 @@ export default async function Page({ searchParams }: PageProps) {
         or(ilike(gym.name, `%${search}%`), ilike(gym.location, `%${search}%`))
       )
     : eq(gym.isApproved, true)
-
-  const gyms = await db
-    .select()
-    .from(gym)
-    .where(whereClause)
-    .limit(ITEMS_PER_PAGE)
-    .offset(offset)
 
   const [{ totalGyms }] = await db
     .select({
