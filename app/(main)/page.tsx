@@ -130,10 +130,13 @@ export default async function Page({ searchParams }: PageProps) {
 
               <CardFooter className="pt-0">
                 <div className="flex w-full gap-2">
-                  <Link href={`/gym/${g.id}`}>
-                    <Button variant="outline">More details</Button>
-                  </Link>
-                  <JoinGym />
+                  <Button asChild variant="outline" className="shrink-0">
+                    <Link href={`/gym/${g.id}`}>More details</Link>
+                  </Button>
+
+                  <div className="flex-1">
+                    <JoinGym />
+                  </div>
                 </div>
               </CardFooter>
             </Card>

@@ -67,10 +67,10 @@ export default async function SpecificGymPage({
       )}
 
       <div className="mb-8 w-full">
-        <JoinGym className="w-full" />
+        <JoinGym />
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      <div className="flex flex-col gap-8">
         <div>
           <Card className="w-full">
             <CardContent className="grid gap-4">

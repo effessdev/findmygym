@@ -10,13 +10,14 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { RocketIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
 
-export function JoinGym({ className }: { className?: string }) {
+export function JoinGym() {
   return (
     <Dialog>
       <form>
         <DialogTrigger asChild>
-          <Button className={className}>
+          <Button className="w-full">
             Join Gym <RocketIcon />
           </Button>
         </DialogTrigger>
