@@ -8,7 +8,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination"
 
-export default function GymPagination({
+export default function GymsPagination({
   currentPage,
   totalPages,
   buildPageUrl,

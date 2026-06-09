@@ -11,12 +11,14 @@ import Link from "next/link"
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
 import Image from "next/image"
-import { and, eq, ilike, or } from "drizzle-orm"
+import GymsPagination from "./gyms-pagination"
+import { and, count, eq, ilike, or } from "drizzle-orm"
 import { JoinGym } from "./join-gym"
 
-const ITEMS_PER_PAGE = 20
+export const GYMS_PER_PAGE = 20
 
-export default async function Gyms({
+export async function Gyms({
+  currentPage,
   offset,
   search,
 }: {
@@ -35,8 +37,17 @@ export default async function Gyms({
     .select()
     .from(gym)
     .where(whereClause)
-    .limit(ITEMS_PER_PAGE)
+    .limit(GYMS_PER_PAGE)
     .offset(offset)
+
+  const [{ totalGyms }] = await db
+    .select({
+      totalGyms: count(),
+    })
+    .from(gym)
+    .where(whereClause)
+
+  const totalPages = Math.ceil(totalGyms / GYMS_PER_PAGE)
 
   return (
     <div className="flex flex-col gap-4">
@@ -98,6 +109,21 @@ export default async function Gyms({
             </CardFooter>
           </Card>
         ))
+      )}
+
+      {totalPages > 1 && (
+        <GymsPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          buildPageUrl={(page: number) => {
+            const params = new URLSearchParams()
+            params.set("page", page.toString())
+            if (search) {
+              params.set("search", search)
+            }
+            return `/?${params.toString()}`
+          }}
+        />
       )}
     </div>
   )
