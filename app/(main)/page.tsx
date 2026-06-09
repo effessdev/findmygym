@@ -23,7 +23,8 @@ import Image from "next/image"
 import { SearchBar } from "./_components/search-bar"
 import { and, count, eq, ilike, or } from "drizzle-orm"
 import { JoinGym } from "./_components/join-gym"
-import { FadeInOnView } from "@/components/animations/fade-in-on-view"
+import Gyms from "./_components/gyms"
+import GymPagination from "./_components/gym-pagination"
 
 interface PageProps {
   searchParams: Promise<{
@@ -64,150 +65,30 @@ export default async function Page({ searchParams }: PageProps) {
 
   const totalPages = Math.ceil(totalGyms / ITEMS_PER_PAGE)
 
-  const buildPageUrl = (page: number) => {
-    const params = new URLSearchParams()
-
-    params.set("page", page.toString())
-
-    if (search) {
-      params.set("search", search)
-    }
-
-    return `/?${params.toString()}`
-  }
-
   return (
-    <div className="space-y-6 px-4 py-8">
-      <div className="flex flex-col gap-4">
-        <div>
-          <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
-          <p className="text-muted-foreground">Browse all available gyms</p>
-        </div>
-
-        <SearchBar />
-
-        {gyms.length === 0 ? (
-          <Card>
-            <CardContent className="py-8 text-center">
-              <p className="text-muted-foreground">
-                No gyms found matching &quot;{search}&quot;
-              </p>
-            </CardContent>
-          </Card>
-        ) : (
-          gyms.map((g) => (
-            <Card key={g.id} className="flex flex-col">
-              {g.images.length > 0 && (
-                <Image
-                  src={g.images[0]}
-                  alt={g.name}
-                  width={400}
-                  height={300}
-                  className="aspect-4/3 w-full object-cover"
-                />
-              )}
-
-              <CardHeader>
-                <CardTitle className="text-lg font-bold">
-                  <div className="flex justify-between gap-4">
-                    <p>{g.name}</p>
-                    <p className="text-primary">₹{g.feePerMonth}/mo</p>
-                  </div>
-                </CardTitle>
-
-                <CardDescription className="line-clamp-4">
-                  {g.description}
-                </CardDescription>
-              </CardHeader>
-
-              <CardContent>
-                <p className="text-sm">
-                  <span className="font-bold">Location:</span> {g.location}
-                </p>
-
-                <p className="text-sm">
-                  <span className="font-bold">Opening Hours:</span>{" "}
-                  {g.openingHours}
-                </p>
-              </CardContent>
-
-              <CardFooter className="pt-0">
-                <div className="flex w-full gap-2">
-                  <Button asChild variant="outline" className="shrink-0">
-                    <Link href={`/gym/${g.id}`}>More details</Link>
-                  </Button>
-
-                  <div className="flex-1">
-                    <JoinGym />
-                  </div>
-                </div>
-              </CardFooter>
-            </Card>
-          ))
-        )}
+    <div className="gap-4 space-y-6 px-4 py-8">
+      <div>
+        <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
+        <p className="text-muted-foreground">Browse all available gyms</p>
       </div>
 
+      <SearchBar />
+
+      <Gyms currentPage={currentPage} offset={offset} search={search} />
+
       {totalPages > 1 && (
-        <div className="mt-8 flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              {currentPage > 1 && (
-                <PaginationItem>
-                  <PaginationPrevious href={buildPageUrl(currentPage - 1)} />
-                </PaginationItem>
-              )}
-
-              {Array.from({ length: totalPages }, (_, i) => {
-                const pageNum = i + 1
-
-                const showPage =
-                  pageNum === 1 ||
-                  pageNum === totalPages ||
-                  Math.abs(pageNum - currentPage) <= 1
-
-                if (!showPage) {
-                  if (pageNum === 2 && currentPage > 3) {
-                    return (
-                      <PaginationItem key="ellipsis-start">
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                    )
-                  }
-
-                  if (
-                    pageNum === totalPages - 1 &&
-                    currentPage < totalPages - 2
-                  ) {
-                    return (
-                      <PaginationItem key="ellipsis-end">
-                        <PaginationEllipsis />
-                      </PaginationItem>
-                    )
-                  }
-
-                  return null
-                }
-
-                return (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      href={buildPageUrl(pageNum)}
-                      isActive={pageNum === currentPage}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                )
-              })}
-
-              {currentPage < totalPages && (
-                <PaginationItem>
-                  <PaginationNext href={buildPageUrl(currentPage + 1)} />
-                </PaginationItem>
-              )}
-            </PaginationContent>
-          </Pagination>
-        </div>
+        <GymPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          buildPageUrl={(page: number) => {
+            const params = new URLSearchParams()
+            params.set("page", page.toString())
+            if (search) {
+              params.set("search", search)
+            }
+            return `/?${params.toString()}`
+          }}
+        />
       )}
     </div>
   )
