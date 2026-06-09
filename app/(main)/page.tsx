@@ -23,6 +23,7 @@ import Image from "next/image"
 import { SearchBar } from "./_components/search-bar"
 import { and, count, eq, ilike, or } from "drizzle-orm"
 import { JoinGym } from "./_components/join-gym"
+import { FadeInOnView } from "@/components/animations/fade-in-on-view"
 
 interface PageProps {
   searchParams: Promise<{
@@ -77,7 +78,7 @@ export default async function Page({ searchParams }: PageProps) {
 
   return (
     <div className="space-y-6 px-4 py-8">
-      <div className="grid w-full grid-cols-1 gap-4">
+      <div className="flex flex-col gap-4">
         <div>
           <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
           <p className="text-muted-foreground">Browse all available gyms</p>
@@ -114,15 +115,17 @@ export default async function Page({ searchParams }: PageProps) {
                   </div>
                 </CardTitle>
 
-                <CardDescription>{g.description}</CardDescription>
+                <CardDescription className="line-clamp-4">
+                  {g.description}
+                </CardDescription>
               </CardHeader>
 
               <CardContent>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm">
                   <span className="font-bold">Location:</span> {g.location}
                 </p>
 
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm">
                   <span className="font-bold">Opening Hours:</span>{" "}
                   {g.openingHours}
                 </p>
