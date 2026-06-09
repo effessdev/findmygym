@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm"
 import { gym } from "@/db/schema/gym-schema"
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
-import { IndianRupee, MapPin, Mail, Phone, RocketIcon } from "lucide-react"
+import { IndianRupee, MapPin, Mail, Phone } from "lucide-react"
 import {
   Carousel,
   CarouselContent,
@@ -12,8 +12,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel"
 import Image from "next/image"
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
 import { JoinGym } from "../../_components/join-gym"
 
 export default async function SpecificGymPage({

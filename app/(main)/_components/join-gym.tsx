@@ -10,7 +10,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { RocketIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 export function JoinGym() {
   return (
