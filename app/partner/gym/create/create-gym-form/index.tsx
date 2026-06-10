@@ -14,6 +14,7 @@ import { updateGym } from "../_actions/update-gym"
 import { gymCreateSchema } from "@/app/partner/gym/create/schemas"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 import { GymImagePicker, type SelectedImage } from "./gym-image-picker"
 
 type GymFormInput = z.input<typeof gymCreateSchema>
@@ -103,7 +104,7 @@ export default function CreateGymForm({
             selectedImages.map((image) => image.file),
             imagesToRemove
           )
-          setStatusMessage("Gym updated successfully.")
+          toast.success("Gym updated successfully.")
         } else {
           // Create mode - validate minimum images
           if (selectedImages.length < MIN_IMAGES) {
@@ -116,15 +117,10 @@ export default function CreateGymForm({
           )
           reset()
           setSelectedImages([])
-          setStatusMessage("Gym created successfully.")
+          toast.success("Gym created successfully.")
         }
 
-        // Redirect to gym details or partner page
-        if (isEditMode) {
-          router.push(`/partner/gym/${gymId}`)
-        } else {
-          router.push("/partner")
-        }
+        router.push(`/partner/gym`)
       } catch (error) {
         setSubmissionError(
           error instanceof Error ? error.message : "Unable to save gym."
