@@ -3,7 +3,7 @@
 import { useEffect } from "react"
 import type { ChangeEvent } from "react"
 import Image from "next/image"
-import { processImage } from "../utils"
+import { processImage } from "../create/utils"
 import { Button } from "@/components/ui/button"
 
 export type SelectedImage = {
