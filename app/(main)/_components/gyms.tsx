@@ -97,14 +97,12 @@ export async function Gyms({
             </CardContent>
 
             <CardFooter className="pt-0">
-              <div className="flex w-full gap-2">
-                <Button asChild variant="outline" className="shrink-0">
+              <div className="grid w-full grid-cols-2 gap-2">
+                <Button asChild variant="outline" className="w-full">
                   <Link href={`/gym/${g.id}`}>More details</Link>
                 </Button>
 
-                <div className="flex-1">
-                  <JoinGym gymId={g.id} />
-                </div>
+                <JoinGym gymId={g.id} />
               </div>
             </CardFooter>
           </Card>
