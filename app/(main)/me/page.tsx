@@ -8,10 +8,8 @@ import { gym } from "@/db/schema/gym-schema"
 import { eq, count } from "drizzle-orm"
 import {
   Card,
-  CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
