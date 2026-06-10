@@ -40,8 +40,12 @@ export default async function MePage() {
   return (
     <div>
       <div className="flex flex-col gap-4 px-4 py-8">
-        <h1 className="text-4xl font-bold">Hello, {session.user.name}</h1>
-        <p className="text-muted-foreground">Manage your profile here.</p>
+        <h1 className="text-center text-4xl font-bold">
+          Hello, {session.user.name}
+        </h1>
+        <p className="text-center text-muted-foreground">
+          Manage your profile here.
+        </p>
 
         <Card>
           <CardHeader>
