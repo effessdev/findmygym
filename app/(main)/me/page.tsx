@@ -12,7 +12,7 @@ import Memberships from "./_components/memberships"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { Suspense } from "react"
-import { Skeleton } from "@/components/ui/skeleton"
+import { Spinner } from "@/components/ui/spinner"
 
 export default async function MePage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -31,9 +31,23 @@ export default async function MePage() {
           Manage your profile here.
         </p>
 
-        <Suspense fallback={<Skeleton className="h-30 w-full" />}>
-          <Memberships />
-        </Suspense>
+        <Card>
+          <CardHeader>
+            <CardTitle>Your Memberships</CardTitle>
+            <CardDescription>View and manage your memberships.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Suspense
+              fallback={
+                <div className="flex h-20 w-full items-center justify-center">
+                  <Spinner />
+                </div>
+              }
+            >
+              <Memberships />
+            </Suspense>
+          </CardContent>
+        </Card>
 
         <Card>
           <CardHeader>

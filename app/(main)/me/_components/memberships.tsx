@@ -1,10 +1,3 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card"
 import db from "@/db/db"
 import { eq } from "drizzle-orm"
 import { Button } from "@/components/ui/button"
@@ -29,38 +22,31 @@ export default async function Memberships() {
     },
   })
 
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Your Memberships</CardTitle>
-        <CardDescription>View and manage your memberships.</CardDescription>
-      </CardHeader>
-      <CardContent>
-        {memberships.length > 0 ? (
-          memberships.map((membership) => (
-            <>
-              <Separator className="my-4" />
-              <div key={membership.id} className="flex flex-col gap-2">
-                <div className="flex items-center justify-between text-xl">
-                  <p className="font-bold">{membership.gym.name}</p>
-                  <p className="font-bold text-primary">
-                    ₹{membership.gym.feePerMonth}
-                  </p>
-                </div>
-                <p className="text-muted-foreground">
-                  <span className="font-bold">Expires on: </span>
-                  {membership.expiresAt.toDateString()}
-                </p>
-                <Button asChild className="mt-2">
-                  <Link href={`/gym/${membership.gym.id}`}>View</Link>
-                </Button>
-              </div>
-            </>
-          ))
-        ) : (
-          <p>You don&apos;t have any memberships yet.</p>
-        )}
-      </CardContent>
-    </Card>
-  )
+  if (memberships.length > 0) {
+    return (
+      <>
+        {memberships.map((membership) => (
+          <div key={membership.id} className="flex flex-col gap-2">
+            <div className="flex items-center justify-between text-xl">
+              <p className="font-bold">{membership.gym.name}</p>
+              <p className="font-bold text-primary">
+                ₹{membership.gym.feePerMonth}
+              </p>
+            </div>
+
+            <p className="text-muted-foreground">
+              <span className="font-bold">Expires on: </span>
+              {membership.expiresAt.toDateString()}
+            </p>
+
+            <Button asChild className="mt-2">
+              <Link href={`/gym/${membership.gym.id}`}>View</Link>
+            </Button>
+          </div>
+        ))}
+      </>
+    )
+  }
+
+  return <p>You don&apos;t have any memberships yet.</p>
 }
