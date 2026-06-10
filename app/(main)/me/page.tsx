@@ -54,7 +54,7 @@ export default async function MePage() {
                 <>
                   <Separator className="my-4" />
                   <div key={membership.id} className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between text-xl">
                       <p className="font-bold">{membership.gym.name}</p>
                       <p className="font-bold text-primary">
                         ₹{membership.gym.feePerMonth}
@@ -64,6 +64,9 @@ export default async function MePage() {
                       <span className="font-bold">Expires on: </span>
                       {membership.expiresAt.toDateString()}
                     </p>
+                    <Button asChild className="mt-2">
+                      <Link href={`/gym/${membership.gym.id}`}>View</Link>
+                    </Button>
                   </div>
                 </>
               ))
