@@ -30,6 +30,8 @@ export const membership = pgTable(
       .notNull(),
 
     expiresAt: timestamp("expires_at").notNull(),
+
+    review: text("review"),
   },
   (t) => [uniqueIndex("membership_user_gym_unique").on(t.userId, t.gymId)]
 )

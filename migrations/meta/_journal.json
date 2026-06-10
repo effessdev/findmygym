@@ -22,6 +22,13 @@
       "when": 1780918135940,
       "tag": "0002_quiet_skin",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1781092696404,
+      "tag": "0003_smiling_whiplash",
+      "breakpoints": true
     }
   ]
 }
