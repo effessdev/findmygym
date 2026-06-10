@@ -103,7 +103,7 @@ export async function Gyms({
                 </Button>
 
                 <div className="flex-1">
-                  <JoinGym />
+                  <JoinGym gymId={g.id} />
                 </div>
               </div>
             </CardFooter>

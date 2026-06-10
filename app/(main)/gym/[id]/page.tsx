@@ -65,7 +65,7 @@ export default async function SpecificGymPage({
       )}
 
       <div className="mb-8 w-full">
-        <JoinGym />
+        <JoinGym gymId={thisGym.id} />
       </div>
 
       <div className="flex flex-col gap-8">

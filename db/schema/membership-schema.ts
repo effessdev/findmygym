@@ -5,6 +5,7 @@ import {
   timestamp,
   uniqueIndex,
 } from "drizzle-orm/pg-core"
+import { relations } from "drizzle-orm"
 import { user } from "./auth-schema"
 import { gym } from "./gym-schema"
 
@@ -32,3 +33,15 @@ export const membership = pgTable(
   },
   (t) => [uniqueIndex("membership_user_gym_unique").on(t.userId, t.gymId)]
 )
+
+export const membershipRelations = relations(membership, ({ one }) => ({
+  user: one(user, {
+    fields: [membership.userId],
+    references: [user.id],
+  }),
+
+  gym: one(gym, {
+    fields: [membership.gymId],
+    references: [gym.id],
+  }),
+}))
