@@ -1,6 +1,6 @@
 "use client"
 
-import { Spinner } from "@/components/ui/spinner"
+import { DefaultLoadingScreen } from "@/components/ui/default-loading-screen"
 import { authClient } from "@/lib/auth-client"
 import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
@@ -8,7 +8,7 @@ import { toast } from "sonner"
 
 export default function SignOutPage() {
   const router = useRouter()
-  const [message, setMessage] = useState("")
+  const [message, setMessage] = useState("Signing out")
 
   useEffect(() => {
     async function signOut() {
@@ -28,9 +28,5 @@ export default function SignOutPage() {
     signOut()
   }, [router])
 
-  return (
-    <div className="flex h-dvh w-full items-center justify-center">
-      {message === "" ? <Spinner /> : <p className="text-center">{message}</p>}
-    </div>
-  )
+  return <DefaultLoadingScreen text={message} />
 }

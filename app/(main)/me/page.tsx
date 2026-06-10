@@ -46,9 +46,21 @@ export default async function MePage() {
 
         <Card>
           <CardHeader>
+            <CardTitle>Account</CardTitle>
+            <CardDescription>Manage your account settings.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button variant="destructive" asChild>
+              <Link href="/sign-out">Sign Out</Link>
+            </Button>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>Partnership Program</CardTitle>
             <CardDescription>
-              Join our partnership program to display your gym in our apps. We
+              Join our partnership program to display your gym in this app. We
               will handle discovery and payment for you!
             </CardDescription>
           </CardHeader>
