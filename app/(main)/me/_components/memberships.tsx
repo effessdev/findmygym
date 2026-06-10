@@ -42,28 +42,21 @@ export default async function Memberships() {
               {membership.expiresAt.toDateString()}
             </p>
 
-            <Button asChild className="mt-2">
-              <Link href={`/gym/${membership.gym.id}`}>View</Link>
-            </Button>
+            <div className="mt-2 grid grid-cols-2 gap-2">
+              <Button asChild variant="outline">
+                <Link href={`/gym/${membership.gym.id}`}>View</Link>
+              </Button>
+              <Button asChild>
+                <Link href={`/gym/${membership.gym.id}/review`}>
+                  Write a Review
+                </Link>
+              </Button>
+            </div>
           </div>
         ))}
       </>
     )
   }
 
-  return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-center justify-between text-xl">
-        <p className="font-bold">No memberships</p>
-      </div>
-
-      <p className="text-muted-foreground">
-        Click the button below to find your perfect gym.
-      </p>
-
-      <Button asChild className="mt-2">
-        <Link href={`/`}>Find a Gym</Link>
-      </Button>
-    </div>
-  )
+  return <p>You don&apos;t have any memberships yet.</p>
 }

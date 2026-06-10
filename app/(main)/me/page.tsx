@@ -39,7 +39,7 @@ export default async function MePage() {
           <CardContent>
             <Suspense
               fallback={
-                <div className="flex h-27 w-full items-center justify-center">
+                <div className="flex h-10 w-full items-center justify-center">
                   <Spinner />
                 </div>
               }
