@@ -8,7 +8,7 @@ import type { z } from "zod"
 import db from "@/db/db"
 import { auth } from "@/lib/auth"
 import { gym } from "@/db/schema/gym-schema"
-import { gymCreateSchema } from "@/app/partner/gym/create/_schemas/gym"
+import { gymCreateSchema } from "@/app/partner/gym/create/schemas"
 
 const MAX_IMAGE_BYTES = 1_000_000
 const MIN_IMAGES = 3

@@ -1,4 +1,4 @@
-import CreateGymForm from "./_components/create-gym-form"
+import CreateGymForm from "./create-gym-form"
 
 export default function Page() {
   return (

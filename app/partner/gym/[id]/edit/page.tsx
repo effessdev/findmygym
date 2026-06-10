@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
-import CreateGymForm from "../../create/_components/create-gym-form"
+import CreateGymForm from "../../create/create-gym-form"
 
 interface EditGymPageProps {
   params: {
