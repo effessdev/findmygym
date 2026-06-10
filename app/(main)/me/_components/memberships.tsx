@@ -22,6 +22,9 @@ export default async function Memberships() {
     },
   })
 
+  // WARNING: Do not change the size of anything below this line
+  // unless you update the fallback in the Suspense component above.
+
   if (memberships.length > 0) {
     return (
       <>
@@ -48,5 +51,19 @@ export default async function Memberships() {
     )
   }
 
-  return <p>You don&apos;t have any memberships yet.</p>
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex items-center justify-between text-xl">
+        <p className="font-bold">No memberships</p>
+      </div>
+
+      <p className="text-muted-foreground">
+        Click the button below to find your perfect gym.
+      </p>
+
+      <Button asChild className="mt-2">
+        <Link href={`/`}>Find a Gym</Link>
+      </Button>
+    </div>
+  )
 }
