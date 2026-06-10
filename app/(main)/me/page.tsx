@@ -1,11 +1,6 @@
-import { auth } from "@/lib/auth"
-import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import db from "@/db/db"
-import { gym } from "@/db/schema/gym-schema"
-import { eq, count } from "drizzle-orm"
 import {
   Card,
   CardContent,
@@ -13,29 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { membership } from "@/db/schema/membership-schema"
-import { Separator } from "@/components/ui/separator"
+import Memberships from "./_components/memberships"
+import { auth } from "@/lib/auth"
+import { headers } from "next/headers"
+import { Suspense } from "react"
+import { Skeleton } from "@/components/ui/skeleton"
 
 export default async function MePage() {
   const session = await auth.api.getSession({ headers: await headers() })
 
-  if (session === null) {
+  if (!session) {
     redirect("/sign-in")
   }
-
-  const result = await db
-    .select({ value: count() })
-    .from(gym)
-    .where(eq(gym.ownerId, session.user.id))
-
-  const gymCount = result[0]?.value ?? 0
-
-  const memberships = await db.query.membership.findMany({
-    where: eq(membership.userId, session.user.id),
-    with: {
-      gym: true,
-    },
-  })
 
   return (
     <div>
@@ -47,38 +31,9 @@ export default async function MePage() {
           Manage your profile here.
         </p>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Your Memberships</CardTitle>
-            <CardDescription>View and manage your memberships.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            {memberships.length > 0 ? (
-              memberships.map((membership) => (
-                <>
-                  <Separator className="my-4" />
-                  <div key={membership.id} className="flex flex-col gap-2">
-                    <div className="flex items-center justify-between text-xl">
-                      <p className="font-bold">{membership.gym.name}</p>
-                      <p className="font-bold text-primary">
-                        ₹{membership.gym.feePerMonth}
-                      </p>
-                    </div>
-                    <p className="text-muted-foreground">
-                      <span className="font-bold">Expires on: </span>
-                      {membership.expiresAt.toDateString()}
-                    </p>
-                    <Button asChild className="mt-2">
-                      <Link href={`/gym/${membership.gym.id}`}>View</Link>
-                    </Button>
-                  </div>
-                </>
-              ))
-            ) : (
-              <p>You don&apos;t have any memberships yet.</p>
-            )}
-          </CardContent>
-        </Card>
+        <Suspense fallback={<Skeleton className="h-30 w-full" />}>
+          <Memberships />
+        </Suspense>
 
         <Card>
           <CardHeader>
@@ -102,11 +57,7 @@ export default async function MePage() {
           </CardHeader>
           <CardContent>
             <Link href="/partner">
-              <Button>
-                {gymCount > 0
-                  ? "Go to Partnership Dashboard"
-                  : "Join the Partnership Program"}
-              </Button>
+              <Button>Go to Partnership Program</Button>
             </Link>
           </CardContent>
         </Card>
