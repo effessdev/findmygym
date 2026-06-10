@@ -1,4 +1,4 @@
-import CreateGymForm from "../create-gym-form"
+import GymForm from "../gym-form"
 
 export default function Page() {
   return (
@@ -10,7 +10,7 @@ export default function Page() {
           the email are required.
         </p>
       </div>
-      <CreateGymForm />
+      <GymForm />
     </main>
   )
 }

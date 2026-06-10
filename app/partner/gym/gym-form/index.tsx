@@ -40,7 +40,7 @@ interface GymFormProps {
   }
 }
 
-export default function CreateGymForm({
+export default function GymForm({
   isEditMode = false,
   gymId,
   initialValues,

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
-import CreateGymForm from "../../create-gym-form"
+import GymForm from "../../gym-form"
 
 interface EditGymPageProps {
   params: {
@@ -43,7 +43,7 @@ export default async function EditGymPage({ params }: EditGymPageProps) {
           remove images as needed.
         </p>
       </div>
-      <CreateGymForm
+      <GymForm
         isEditMode
         gymId={gymId}
         initialValues={{
