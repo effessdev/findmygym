@@ -16,7 +16,7 @@ export default async function MePage() {
   if (!session) {
     return (
       <div className="mx-auto flex w-full max-w-2xl flex-col px-4 py-8 sm:px-6 lg:px-8">
-        <Card className="border-border/70 shadow-sm">
+        <Card className="border-border/70">
           <CardHeader className="space-y-2">
             <CardTitle className="text-2xl font-semibold tracking-tight">
               Sign in to continue
@@ -50,7 +50,7 @@ export default async function MePage() {
       </section>
 
       <div className="space-y-4">
-        <div className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+        <div className="rounded-xl border border-border/70 bg-card p-4">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">Memberships</h2>
@@ -70,7 +70,7 @@ export default async function MePage() {
           </Suspense>
         </div>
 
-        <div className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+        <div className="rounded-xl border border-border/70 bg-card p-4">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">Account</h2>
@@ -82,11 +82,11 @@ export default async function MePage() {
           </Button>
         </div>
 
-        <div className="rounded-xl border border-border/70 bg-card p-4 shadow-sm">
+        <div className="rounded-xl border border-border/70 bg-card p-4">
           <div className="mb-3 flex items-center justify-between">
             <div>
               <h2 className="text-lg font-semibold">Your gyms</h2>
-              <p className="text-sm text-muted-foreground">
+              <p className="mb-2 text-sm text-muted-foreground">
                 Update your listings.
               </p>
             </div>

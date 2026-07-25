@@ -34,35 +34,34 @@ export default async function YourGyms() {
   }
 
   return (
-    <div className="flex flex-col gap-3">
-      {gyms.map((gymItem) => (
-        <div
-          key={gymItem.id}
-          className="flex flex-col gap-3 rounded-xl border border-border/70 bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between"
-        >
-          <div className="space-y-1">
-            <p className="text-base font-semibold">{gymItem.name}</p>
-            <p className="text-sm text-muted-foreground">
-              Update your listing and manage member options.
-            </p>
-          </div>
+    <div className="flex flex-col">
+      <div>
+        {gyms.map((gymItem) => (
+          <div
+            key={gymItem.id}
+            className="flex flex-col gap-3 border-t py-4 sm:flex-row sm:items-center sm:justify-between"
+          >
+            <div className="space-y-1">
+              <p className="text-base font-semibold">{gymItem.name}</p>
+            </div>
 
-          <div className="flex flex-col gap-2 sm:min-w-56 sm:flex-row">
-            <Link href={`/gym/${gymItem.id}/edit`} className="flex-1">
-              <Button variant="outline" className="w-full">
-                Edit
-              </Button>
-            </Link>
-            <Link href={`/gym/${gymItem.id}/options`} className="flex-1">
-              <Button variant="default" className="w-full">
-                Options
-              </Button>
-            </Link>
+            <div className="flex gap-2">
+              <Link href={`/gym/${gymItem.id}/edit`} className="flex-1">
+                <Button variant="outline" className="w-full">
+                  Edit
+                </Button>
+              </Link>
+              <Link href={`/gym/${gymItem.id}/options`} className="flex-1">
+                <Button variant="default" className="w-full">
+                  Options
+                </Button>
+              </Link>
+            </div>
           </div>
-        </div>
-      ))}
+        ))}
+      </div>
 
-      <div className="flex flex-col gap-3 rounded-xl border border-dashed border-border/70 bg-muted/20 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mt-4 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-medium">Want to add another gym?</p>
           <p className="text-sm text-muted-foreground">
