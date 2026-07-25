@@ -39,60 +39,47 @@ export default async function MePage() {
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
       <section className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-            Hello, {session.user.name}
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground sm:text-base">
-            Manage your memberships and gym listings.
-          </p>
-        </div>
+        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+          Hello, {session.user.name}
+        </h1>
+        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+          Manage your memberships, account, and gym listings here.
+        </p>
       </section>
 
       <div className="space-y-4">
-        <div className="rounded-xl border border-border/70 bg-card p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Memberships</h2>
-              <p className="text-sm text-muted-foreground">
-                Your active memberships.
-              </p>
-            </div>
-          </div>
-          <Suspense
-            fallback={
-              <div className="flex h-10 w-full items-center justify-center">
-                <Spinner />
-              </div>
-            }
-          >
-            <Memberships />
-          </Suspense>
-        </div>
+        <Card>
+          <CardContent>
+            <h2 className="mb-4 text-lg font-semibold">Memberships</h2>
+            <Suspense
+              fallback={
+                <div className="flex h-10 w-full items-center justify-center">
+                  <Spinner />
+                </div>
+              }
+            >
+              <Memberships />
+            </Suspense>
+          </CardContent>
+        </Card>
 
-        <div className="rounded-xl border border-border/70 bg-card p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Account</h2>
-              <p className="text-sm text-muted-foreground">Sign out anytime.</p>
-            </div>
-          </div>
-          <Button variant="destructive" asChild className="w-full sm:w-auto">
-            <Link href="/sign-out">Sign Out</Link>
-          </Button>
-        </div>
+        <Card>
+          <CardContent className="flex flex-col gap-4">
+            <h2 className="text-lg font-semibold">Account</h2>
+            <p className="text-sm text-muted-foreground">
+              You can sign out to sign in with a different account.
+            </p>
+            <Button variant="destructive" asChild className="w-full sm:w-auto">
+              <Link href="/sign-out">Sign Out</Link>
+            </Button>
+          </CardContent>
+        </Card>
 
-        <div className="rounded-xl border border-border/70 bg-card p-4">
-          <div className="mb-3 flex items-center justify-between">
-            <div>
-              <h2 className="text-lg font-semibold">Your gyms</h2>
-              <p className="mb-2 text-sm text-muted-foreground">
-                Update your listings.
-              </p>
-            </div>
-          </div>
-          <YourGyms />
-        </div>
+        <Card>
+          <CardContent>
+            <YourGyms />
+          </CardContent>
+        </Card>
       </div>
     </div>
   )

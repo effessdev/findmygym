@@ -34,13 +34,16 @@ export default async function YourGyms() {
   }
 
   return (
-    <div className="flex flex-col">
-      <div>
+    <div className="flex flex-col gap-4">
+      <h2 className="text-lg font-semibold">Your Gyms</h2>
+      <p className="text-sm text-muted-foreground">
+        You have {gyms.length} gym{gyms.length !== 1 ? "s" : ""}. Manage them
+        below or submit another one.
+      </p>
+
+      <div className="*:last:border-b">
         {gyms.map((gymItem) => (
-          <div
-            key={gymItem.id}
-            className="flex flex-col gap-3 border-t py-4 sm:flex-row sm:items-center sm:justify-between"
-          >
+          <div key={gymItem.id} className="flex flex-col gap-3 border-t py-4">
             <div className="space-y-1">
               <p className="text-base font-semibold">{gymItem.name}</p>
             </div>
@@ -61,17 +64,9 @@ export default async function YourGyms() {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-col gap-3 border-t pt-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <p className="font-medium">Want to add another gym?</p>
-          <p className="text-sm text-muted-foreground">
-            Keep your portfolio growing with a new listing.
-          </p>
-        </div>
-        <Link href="/gym/create">
-          <Button className="w-full sm:w-auto">Submit another one</Button>
-        </Link>
-      </div>
+      <Button className="w-full" asChild>
+        <Link href="/gym/create">Submit another one</Link>
+      </Button>
     </div>
   )
 }

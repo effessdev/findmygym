@@ -24,11 +24,14 @@ export default async function Memberships() {
 
   if (memberships.length > 0) {
     return (
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-4">
+        <p className="text-sm text-muted-foreground">
+          These are your active gym memberships.
+        </p>
         {memberships.map((membership) => (
           <div
             key={membership.id}
-            className="flex flex-col gap-3 rounded-lg border border-border/60 bg-background/70 p-4 sm:flex-row sm:items-center sm:justify-between"
+            className="flex flex-col gap-2 border-t pt-4"
           >
             <div className="space-y-2">
               <p className="text-base font-semibold">{membership.gym.name}</p>
@@ -66,13 +69,10 @@ export default async function Memberships() {
   }
 
   return (
-    <div className="rounded-lg border border-dashed border-border/60 bg-background/70 px-4 py-6 text-center">
-      <p className="font-medium">No memberships yet</p>
-      <p className="mt-1 text-sm text-muted-foreground">
-        Browse gyms and join the ones that fit your routine.
-      </p>
-      <Button asChild className="mt-4">
-        <Link href="/">Explore gyms</Link>
+    <div className="flex flex-col gap-4">
+      <p className="text-sm text-muted-foreground">No memberships yet.</p>
+      <Button asChild className="w-full">
+        <Link href="/">Browse gyms</Link>
       </Button>
     </div>
   )
