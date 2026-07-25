@@ -10,7 +10,7 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { deleteGym } from "../_actions/delete-gym"
+import { deleteGym } from "./delete-gym"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
@@ -39,7 +39,7 @@ export default function DeleteGymDialog({ gymId }: { gymId: string }) {
               deleteBtn.disabled = true
               const result = await deleteGym(gymId)
               if (result.success) {
-                router.push("/partner/gym")
+                router.push("/me")
                 return
               }
               toast.error(result.message)

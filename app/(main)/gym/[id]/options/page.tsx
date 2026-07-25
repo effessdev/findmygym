@@ -8,7 +8,7 @@ import {
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
 import { eq } from "drizzle-orm"
-import DeleteGymDialog from "../../../_components/delete-gym-dialog"
+import DeleteGymDialog from "../../../_actions/delete-gym-dialog"
 
 export default async function GymPage({ params }: { params: { id: string } }) {
   const { id } = await params

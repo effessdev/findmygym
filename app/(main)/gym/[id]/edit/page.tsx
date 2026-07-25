@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 import { auth } from "@/lib/auth"
 import db from "@/db/db"
 import { gym } from "@/db/schema/gym-schema"
-import GymForm from "../../gym-form"
+import GymForm from "../../create/gym-form"
 
 interface EditGymPageProps {
   params: {
@@ -24,14 +24,14 @@ export default async function EditGymPage({ params }: EditGymPageProps) {
   const gymData = await db.select().from(gym).where(eq(gym.id, gymId)).limit(1)
 
   if (!gymData.length) {
-    redirect("/partner")
+    redirect("/me")
   }
 
   const gymRecord = gymData[0]
 
   // Verify the user owns this gym
   if (gymRecord.ownerId !== session.user.id) {
-    redirect("/partner")
+    redirect("/me")
   }
 
   return (

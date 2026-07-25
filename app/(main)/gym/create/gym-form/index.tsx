@@ -9,9 +9,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { createGym } from "../create/actions"
-import { updateGym } from "../[id]/edit/actions"
-import { gymCreateSchema } from "@/app/partner/gym/create/schemas"
+import { createGym } from "../actions"
+import { updateGym } from "../../[id]/edit/actions"
+import { gymCreateSchema } from "@/app/(main)/gym/create/schemas"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "sonner"
@@ -120,7 +120,7 @@ export default function GymForm({
           toast.success("Gym created successfully.")
         }
 
-        router.push(`/partner/gym`)
+        router.push(`/me`)
       } catch (error) {
         setSubmissionError(
           error instanceof Error ? error.message : "Unable to save gym."
@@ -349,10 +349,7 @@ export default function GymForm({
       ) : null}
 
       <div className="flex gap-2">
-        <Link
-          href={isEditMode ? `/partner/gym` : "/partner"}
-          className="flex-1"
-        >
+        <Link href="/me" className="flex-1">
           <Button variant="secondary" className="w-full">
             Go Back
           </Button>

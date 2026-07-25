@@ -1,4 +1,4 @@
-import GymForm from "../gym-form"
+import GymForm from "./gym-form"
 
 export default function Page() {
   return (

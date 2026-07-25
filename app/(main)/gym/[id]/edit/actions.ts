@@ -9,7 +9,7 @@ import { eq } from "drizzle-orm"
 import db from "@/db/db"
 import { auth } from "@/lib/auth"
 import { gym } from "@/db/schema/gym-schema"
-import { gymCreateSchema } from "@/app/partner/gym/create/schemas"
+import { gymCreateSchema } from "@/app/(main)/gym/create/schemas"
 
 const MAX_IMAGE_BYTES = 1_000_000
 
