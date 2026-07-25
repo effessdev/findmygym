@@ -1,5 +1,14 @@
 # findmygym
 
+## Setup
+
+- `git clone <clone_url>`
+- `vercel link`
+- `vercel env pull`
+- `pnpm dev`
+
+## Notes
+
 If you are getting `Error [NeonDbError]: Error connecting to database: TypeError: fetch failed` error, try adding this to `~/.bashrc`:
 
 ```bash
