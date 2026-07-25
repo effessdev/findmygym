@@ -2,11 +2,11 @@ import db from "@/db/db"
 import { eq } from "drizzle-orm"
 import { Button } from "@/components/ui/button"
 import { membership } from "@/db/schema/membership-schema"
-import { Separator } from "@/components/ui/separator"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
 import { redirect } from "next/navigation"
 import Link from "next/link"
+import CancelMembershipDialog from "./cancel-membership-dialog"
 
 export default async function Memberships() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -46,11 +46,7 @@ export default async function Memberships() {
               <Button asChild variant="outline">
                 <Link href={`/gym/${membership.gym.id}`}>View</Link>
               </Button>
-              <Button asChild>
-                <Link href={`/gym/${membership.gym.id}/review`}>
-                  Write a Review
-                </Link>
-              </Button>
+              <CancelMembershipDialog membershipId={membership.id} />
             </div>
           </div>
         ))}
