@@ -14,6 +14,7 @@ import { Suspense } from "react"
 import { Spinner } from "@/components/ui/spinner"
 import SocialSignIn from "@/components/ui/social-sign-in"
 import { SiGoogle } from "react-icons/si"
+import YourGyms from "./_components/your-gyms"
 
 export default async function MePage() {
   const session = await auth.api.getSession({ headers: await headers() })
@@ -80,16 +81,10 @@ export default async function MePage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Partnership Program</CardTitle>
-          <CardDescription>
-            Join our partnership program to display your gym in this app. We
-            will handle discovery and payment for you!
-          </CardDescription>
+          <CardTitle>Your gyms</CardTitle>
         </CardHeader>
         <CardContent>
-          <Link href="/partner">
-            <Button>Go to Partnership Program</Button>
-          </Link>
+          <YourGyms />
         </CardContent>
       </Card>
     </div>
