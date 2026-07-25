@@ -24,27 +24,38 @@ export default async function Memberships() {
 
   if (memberships.length > 0) {
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-3">
         {memberships.map((membership) => (
           <div
             key={membership.id}
-            className="flex flex-col gap-2 border-t pt-4"
+            className="flex flex-col gap-3 rounded-lg border border-border/60 bg-background/70 p-4 sm:flex-row sm:items-center sm:justify-between"
           >
-            <div className="flex items-center justify-between text-xl">
-              <p className="font-bold">{membership.gym.name}</p>
-              <p className="font-bold text-primary">
-                ₹{membership.gym.feePerMonth}
-              </p>
+            <div className="space-y-2">
+              <p className="text-base font-semibold">{membership.gym.name}</p>
+
+              <div className="flex flex-wrap gap-x-4 gap-y-1 text-sm text-muted-foreground">
+                <span>
+                  Fee:{" "}
+                  <span className="font-medium text-foreground">
+                    ₹{membership.gym.feePerMonth}/mo
+                  </span>
+                </span>
+                <span>
+                  Expires:{" "}
+                  <span className="font-medium text-foreground">
+                    {membership.expiresAt.toDateString()}
+                  </span>
+                </span>
+              </div>
             </div>
 
-            <p className="text-muted-foreground">
-              <span className="font-bold">Expires on: </span>
-              {membership.expiresAt.toDateString()}
-            </p>
-
-            <div className="mt-2 grid grid-cols-2 gap-2">
-              <Button asChild variant="outline">
-                <Link href={`/gym/${membership.gym.id}`}>View</Link>
+            <div className="flex flex-col gap-2 sm:min-w-45">
+              <Button
+                asChild
+                variant="outline"
+                className="w-full justify-center"
+              >
+                <Link href={`/gym/${membership.gym.id}`}>View gym</Link>
               </Button>
               <CancelMembershipDialog membershipId={membership.id} />
             </div>
@@ -54,5 +65,15 @@ export default async function Memberships() {
     )
   }
 
-  return <p>You don&apos;t have any memberships yet.</p>
+  return (
+    <div className="rounded-lg border border-dashed border-border/60 bg-background/70 px-4 py-6 text-center">
+      <p className="font-medium">No memberships yet</p>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Browse gyms and join the ones that fit your routine.
+      </p>
+      <Button asChild className="mt-4">
+        <Link href="/">Explore gyms</Link>
+      </Button>
+    </div>
+  )
 }
