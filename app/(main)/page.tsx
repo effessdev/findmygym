@@ -20,9 +20,9 @@ export default async function Page({ searchParams }: PageProps) {
   return (
     <div className="gap-4 space-y-6 px-4 py-8">
       <div>
-        <h1 className="mb-2 text-center text-3xl font-bold">Gyms</h1>
-        <p className="text-center text-muted-foreground">
-          Browse all available gyms
+        <h1 className="mb-2 text-3xl font-bold">Gyms</h1>
+        <p className="text-muted-foreground">
+          Browse and find the perfect fit for your fitness journey
         </p>
       </div>
 

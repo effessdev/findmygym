@@ -1,6 +1,6 @@
 import BottomNav from "@/app/_components/bottom-nav"
 import { HomeIcon } from "lucide-react"
-import { MapIcon, UserIcon } from "lucide-react"
+import { BellIcon, UserIcon } from "lucide-react"
 
 export default async function SignInLayout({
   children,
@@ -12,9 +12,9 @@ export default async function SignInLayout({
       <main className="mx-auto w-full max-w-2xl flex-1">{children}</main>
       <BottomNav
         items={[
-          { name: "Me", icon: <UserIcon />, href: "/me" },
+          { name: "Notifications", icon: <BellIcon />, href: "/notifications" },
           { name: "Home", icon: <HomeIcon />, href: "/" },
-          { name: "Map", icon: <MapIcon />, href: "/map" },
+          { name: "Account", icon: <UserIcon />, href: "/me" },
         ]}
       />
     </div>
