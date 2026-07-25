@@ -32,9 +32,7 @@ export function JoinGym({ gymId }: { gymId: string }) {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>Join this Gym</DialogTitle>
-            <DialogDescription>
-              Pay now and take a membership.
-            </DialogDescription>
+            <DialogDescription>Take a membership.</DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
@@ -57,7 +55,7 @@ export function JoinGym({ gymId }: { gymId: string }) {
                 router.push("/me")
               }}
             >
-              Pay Now
+              Take Membership
             </Button>
           </DialogFooter>
         </DialogContent>
