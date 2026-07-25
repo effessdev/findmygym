@@ -22,14 +22,14 @@ export default async function Memberships() {
     },
   })
 
-  // WARNING: Do not change the size of anything below this line
-  // unless you update the fallback in the Suspense component above.
-
   if (memberships.length > 0) {
     return (
-      <>
+      <div className="flex flex-col gap-4">
         {memberships.map((membership) => (
-          <div key={membership.id} className="flex flex-col gap-2">
+          <div
+            key={membership.id}
+            className="flex flex-col gap-2 border-t pt-4"
+          >
             <div className="flex items-center justify-between text-xl">
               <p className="font-bold">{membership.gym.name}</p>
               <p className="font-bold text-primary">
@@ -54,7 +54,7 @@ export default async function Memberships() {
             </div>
           </div>
         ))}
-      </>
+      </div>
     )
   }
 
