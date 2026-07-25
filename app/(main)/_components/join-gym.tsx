@@ -32,7 +32,9 @@ export function JoinGym({ gymId }: { gymId: string }) {
         <DialogContent className="sm:max-w-sm">
           <DialogHeader>
             <DialogTitle>Join this Gym</DialogTitle>
-            <DialogDescription>Take a membership.</DialogDescription>
+            <DialogDescription>
+              Join this gym by taking a membership.
+            </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <DialogClose asChild>
