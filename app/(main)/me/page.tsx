@@ -1,6 +1,12 @@
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import Memberships from "./_components/memberships"
 import { auth } from "@/lib/auth"
 import { headers } from "next/headers"
@@ -19,8 +25,11 @@ export default async function MePage() {
         <Card className="border-border/70">
           <CardHeader className="space-y-2">
             <CardTitle className="text-2xl font-semibold tracking-tight">
-              Sign in to continue
+              Sign in
             </CardTitle>
+            <CardDescription>
+              Please sign in to take memberships or submit your gym.
+            </CardDescription>
           </CardHeader>
           <CardContent className="pt-2">
             <SocialSignIn
@@ -38,11 +47,11 @@ export default async function MePage() {
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-4 px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
-      <section className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+      <section className="flex flex-col gap-3">
+        <h1 className="text-3xl font-semibold tracking-tight">
           Hello, {session.user.name}
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground sm:text-base">
+        <p className="mt-1 text-sm text-muted-foreground">
           Manage your memberships, account, and gym listings here.
         </p>
       </section>
@@ -51,15 +60,7 @@ export default async function MePage() {
         <Card>
           <CardContent>
             <h2 className="mb-4 text-lg font-semibold">Memberships</h2>
-            <Suspense
-              fallback={
-                <div className="flex h-10 w-full items-center justify-center">
-                  <Spinner />
-                </div>
-              }
-            >
-              <Memberships />
-            </Suspense>
+            <Memberships />
           </CardContent>
         </Card>
 
@@ -69,7 +70,7 @@ export default async function MePage() {
             <p className="text-sm text-muted-foreground">
               You can sign out to sign in with a different account.
             </p>
-            <Button variant="destructive" asChild className="w-full sm:w-auto">
+            <Button variant="destructive" asChild className="w-full">
               <Link href="/sign-out">Sign Out</Link>
             </Button>
           </CardContent>
