@@ -12,7 +12,7 @@ export default async function Memberships() {
   const session = await auth.api.getSession({ headers: await headers() })
 
   if (session === null) {
-    redirect("/sign-in")
+    redirect("/me")
   }
 
   const memberships = await db.query.membership.findMany({

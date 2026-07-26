@@ -18,7 +18,7 @@ export default async function EditGymPage({ params }: EditGymPageProps) {
   const { id: gymId } = await params
 
   if (!session) {
-    redirect("/sign-in")
+    redirect("/me")
   }
 
   const gymData = await db.select().from(gym).where(eq(gym.id, gymId)).limit(1)

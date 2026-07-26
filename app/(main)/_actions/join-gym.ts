@@ -13,7 +13,7 @@ export async function joinGym(
   const session = await auth.api.getSession({ headers: await headers() })
 
   if (!session) {
-    redirect("/sign-in")
+    redirect("/me")
   }
 
   const [existingMembership] = await db

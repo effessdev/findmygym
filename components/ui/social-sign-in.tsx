@@ -26,7 +26,7 @@ export default function SocialSignIn({
       await authClient.signIn.social({
         provider: provider,
         callbackURL: "/me",
-        errorCallbackURL: "/sign-in?signinfailed=1",
+        errorCallbackURL: "/me?signinfailed=1",
         newUserCallbackURL: "/me?newuser=1",
         disableRedirect: false,
       })
